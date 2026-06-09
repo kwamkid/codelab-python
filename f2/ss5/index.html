@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CodeLab · F2 Session 5 — While Loops + random</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/style.css?v=11">
+</head>
+<body>
+
+<div class="nav-hint">← → or SPACE to navigate</div>
+<button class="nav-btn prev" onclick="prev()">◀</button>
+<button class="nav-btn next" onclick="next()">▶</button>
+<div class="nav-counter"><strong id="cur">1</strong> / <span id="total">19</span></div>
+
+<a href="../ss4/index.html" class="session-nav prev-session">
+  <span class="session-arrow">◀</span>
+  <span class="session-label">
+    <span class="session-hint">Previous</span>
+    <span class="session-name">Loops + Lists</span>
+  </span>
+</a>
+<span class="session-nav next-session disabled">
+  <span class="session-label">
+    <span class="session-hint">Next session</span>
+    <span class="session-name">— coming soon —</span>
+  </span>
+  <span class="session-arrow">▶</span>
+</span>
+
+<div class="deck">
+
+<!-- ══ 1. COVER ══ -->
+<section class="slide cover cover-python">
+  <div class="sun"></div>
+  <div class="halftone"></div>
+  <div class="python-mark">
+    <img src="../../logo/python-logo.svg" alt="Python">
+  </div>
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill">Python Foundation 2</span></div>
+  </div>
+  <div class="pad" style="padding-top: 180px;">
+    <div class="eyebrow">Session 05 · Level 2 · The Data Master</div>
+    <h1 class="h-hero" style="max-width: 1300px;">Loop until<br><span class="ac-y">done.</span></h1>
+    <div class="tag-row">
+      <span class="tag">🔄 while</span>
+      <span class="tag">🎲 random</span>
+      <span class="tag">🆚 for vs while</span>
+      <span class="tag">⏱ 90 min</span>
+    </div>
+    <div class="meta">
+      <div><span class="label">Level</span>Foundation 2</div>
+      <div><span class="label">Session</span>05 / 12</div>
+    </div>
+  </div>
+  <div class="big-num">05</div>
+  <div class="chrome-bot">
+    <span>codelabthailand.com</span>
+    <span>Session 05 / 12</span>
+  </div>
+</section>
+
+<!-- ══ 2. RECAP S4 ══ -->
+<section class="slide recap">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Recap · Session 4</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🔁 Previously on Session 4</div>
+    <h2 class="h-title" style="max-width: 1600px;">We mastered<br><span class="ac">Loops + Lists.</span></h2>
+    <div class="chips">
+      <span class="chip"><span class="bullet" style="background:var(--red)"></span>for item in list</span>
+      <span class="chip"><span class="bullet" style="background:var(--yellow)"></span>enumerate()</span>
+      <span class="chip"><span class="bullet" style="background:var(--mint)"></span>max / min / sum</span>
+      <span class="chip"><span class="bullet" style="background:var(--sky)"></span>Snack Budget</span>
+    </div>
+    <div class="big-list">
+      <div class="item">
+        <div class="num">01</div>
+        <div class="text">for item in list — walk every item<span>no index needed, just walk!</span></div>
+      </div>
+      <div class="item">
+        <div class="num">02</div>
+        <div class="text">enumerate(list) — get index + value<span>perfect for numbered lists</span></div>
+      </div>
+      <div class="item">
+        <div class="num">03</div>
+        <div class="text">max / min / sum — instant stats<span>but for loops have a limit — they know how many rounds!</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Previous session</span>
+    <span>02 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 3. OBJECTIVES ══ -->
+<section class="slide objectives">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Today's goals</div>
+  </div>
+  <div class="pad" style="padding-top: 150px;">
+    <div class="eyebrow">What you'll learn today</div>
+    <h2 class="h-title" style="max-width: 1500px;">By the end of class,<br>you'll <span class="ac">do three things.</span></h2>
+    <div class="grid">
+      <div class="obj-card c1">
+        <div class="num">1</div>
+        <div class="icon">🔄</div>
+        <h3>Use while loop</h3>
+        <p>Run a loop <strong>until a condition is met</strong> — no fixed number of rounds.</p>
+      </div>
+      <div class="obj-card c2">
+        <div class="num">2</div>
+        <div class="icon">🎲</div>
+        <h3>Use random</h3>
+        <p>Generate random numbers and pick random items with <code style="background:#fff2ca;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:18px">random.randint()</code> + <code style="background:#fff2ca;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:18px">random.choice()</code>.</p>
+      </div>
+      <div class="obj-card c3">
+        <div class="num">3</div>
+        <div class="icon">🆚</div>
+        <h3>for vs while</h3>
+        <p>Know which loop to pick: <strong>for</strong> = known count · <strong>while</strong> = until something happens.</p>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>3 learning objectives</span>
+    <span>03 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 4. AGENDA ══ -->
+<section class="slide steps">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Today's flow</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🎯 5 things we'll do today</div>
+    <h2 class="h-title" style="max-width: 1600px;">Let's <span class="ac">go!</span></h2>
+    <div class="grid">
+      <div class="step">
+        <div class="n">1</div>
+        <h4>Dice Roll 🎲</h4>
+        <p>Roll until you get a 6<br>+ count rolls</p>
+        <span class="meta-pill red">Workshop · 10 min</span>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h4>Same Problem, 2 Ways 🔁</h4>
+        <p>Count 1-10 with<br>both for + while</p>
+        <span class="meta-pill red">Workshop · 15 min</span>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h4>For or While? 🤔</h4>
+        <p>5 problems —<br>which loop fits?</p>
+        <span class="meta-pill yellow">Mini · 10 min</span>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <h4>Guess the Number 🎯</h4>
+        <p>Computer picks 1-100<br>guess until right</p>
+        <span class="meta-pill">🎯 Project · 25 min</span>
+      </div>
+      <div class="step">
+        <div class="n">5</div>
+        <h4>Homework 📚</h4>
+        <p>Quiz · Guess+count<br>· Rock-Paper-Scissors</p>
+        <span class="meta-pill">Take-home</span>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>5 activities today</span>
+    <span>04 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 5. SECTION 1 — While Loop ══ -->
+<section class="slide section-divider">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Part 1 of 3</div>
+  </div>
+  <div class="num">01</div>
+  <div class="pad" style="padding-top: 520px;">
+    <div class="eyebrow">PART ONE · While Loop</div>
+    <h2 class="h-title" style="max-width: 1400px;">Loop until<br>something <span class="ac">happens.</span></h2>
+    <p style="font-family:var(--font-mono);font-size:32px;color:rgba(255,255,255,0.6);margin-top:24px">while condition:</p>
+    <div class="progress">
+      <div class="dot now"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Section 01 · while loop</span>
+    <span>05 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 6. CONCEPT — while ══ -->
+<section class="slide concept">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">while loop concept</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🔄 New superpower: while loop</div>
+    <h2 class="h-big" style="max-width: 1600px;">Run as long as<br>something is <span class="ac">true.</span></h2>
+    <div class="split">
+      <div class="points">
+        <div class="point">
+          <div class="bullet">?</div>
+          <div>
+            <h4>Checks a condition</h4>
+            <p><code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">while x &lt; 10:</code> — run while x is less than 10</p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">🔁</div>
+          <div>
+            <h4>Body runs again &amp; again</h4>
+            <p>Until the condition becomes <code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">False</code></p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">⚠️</div>
+          <div>
+            <h4>Must change something!</h4>
+            <p>If the condition never becomes False → <strong>infinite loop 💥</strong> (program freezes)</p>
+          </div>
+        </div>
+      </div>
+      <div class="diagram-box">
+        <div style="display:flex;flex-direction:column;gap:14px;width:100%;font-family:var(--font-mono);font-size:16px">
+          <div style="text-align:center;font-family:var(--font-display);font-size:18px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Roll until you get a 6</div>
+          <div style="background:#fff;border:2px solid var(--ink);border-radius:12px;padding:14px 18px;box-shadow:3px 3px 0 var(--ink)">
+            <div style="color:var(--muted);font-size:12px">Round 1</div>
+            <div style="display:flex;justify-content:space-between"><span>🎲 = 3</span><span style="color:#0b6b3a">→ keep rolling</span></div>
+          </div>
+          <div style="background:#fff;border:2px solid var(--ink);border-radius:12px;padding:14px 18px;box-shadow:3px 3px 0 var(--ink)">
+            <div style="color:var(--muted);font-size:12px">Round 2</div>
+            <div style="display:flex;justify-content:space-between"><span>🎲 = 1</span><span style="color:#0b6b3a">→ keep rolling</span></div>
+          </div>
+          <div style="background:#fff;border:2px solid var(--ink);border-radius:12px;padding:14px 18px;box-shadow:3px 3px 0 var(--ink)">
+            <div style="color:var(--muted);font-size:12px">Round 3</div>
+            <div style="display:flex;justify-content:space-between"><span>🎲 = 5</span><span style="color:#0b6b3a">→ keep rolling</span></div>
+          </div>
+          <div style="background:#dcf0e4;border:2px solid var(--ink);border-radius:12px;padding:14px 18px;box-shadow:3px 3px 0 var(--ink)">
+            <div style="color:var(--muted);font-size:12px">Round 4</div>
+            <div style="display:flex;justify-content:space-between"><span>🎲 = <strong>6</strong></span><span style="color:#0b6b3a;font-weight:700">→ DONE ✓</span></div>
+          </div>
+          <div style="text-align:center;font-family:var(--font-display);font-weight:600;color:var(--py-blue);font-size:20px;margin-top:8px">Took 4 rolls — but we didn't know in advance!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>while = repeat until condition is False</span>
+    <span>06 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 7. CODE — while + random ══ -->
+<section class="slide code-slide">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Code · while + random</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Live code · Try it!</div>
+    <h2 class="h-big" style="max-width: 1400px;">Roll until <span class="ac">six.</span> 🎲</h2>
+    <div class="code-shell">
+      <div class="bar">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="file">dice_roll.py</div>
+      </div>
+<pre><span class="tk-kw">import</span> <span class="tk-var">random</span>
+
+<span class="tk-var">dice</span> = <span class="tk-num">0</span>            <span class="tk-cm"># start with anything not 6</span>
+<span class="tk-var">count</span> = <span class="tk-num">0</span>
+
+<span class="tk-kw">while</span> <span class="tk-var">dice</span> != <span class="tk-num">6</span>:
+    <span class="tk-var">dice</span> = <span class="tk-var">random</span>.<span class="tk-fn">randint</span>(<span class="tk-num">1</span>, <span class="tk-num">6</span>)
+    <span class="tk-var">count</span> = <span class="tk-var">count</span> + <span class="tk-num">1</span>
+    <span class="tk-fn">print</span>(<span class="tk-fn">f</span><span class="tk-str">"Roll {count}: 🎲 = {dice}"</span>)
+
+<span class="tk-fn">print</span>(<span class="tk-fn">f</span><span class="tk-str">"🎉 Got 6 after {count} rolls!"</span>)
+</pre>
+    </div>
+    <div class="code-callout">
+      <span class="pill">💡 Tip</span>
+      <span><code style="font-family:var(--font-mono)">!=</code> means "not equal" — loop runs while dice is NOT 6</span>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>while + random.randint</span>
+    <span>07 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 8. WORKSHOP 1 — Dice Roll ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill">Workshop 1</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Hands-on · Workshop 1</div>
+    <h2 class="h-title" style="max-width: 1400px;">Roll until<br><span class="ac">six!</span> 🎲</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">Use <code style="background:var(--yellow);padding:4px 12px;border-radius:8px;font-family:var(--font-mono);font-size:22px">while</code> + <code style="background:var(--yellow);padding:4px 12px;border-radius:8px;font-family:var(--font-mono);font-size:22px">random.randint(1, 6)</code> to roll a dice until you get 6.</p>
+        <p class="body" style="margin-top:14px">Count how many rolls it took!</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>import random</div>
+          <div class="check"><div class="box"></div>Start with dice = 0 (not 6)</div>
+          <div class="check"><div class="box"></div>while dice != 6</div>
+          <div class="check"><div class="box"></div>Increment count each round</div>
+        </div>
+        <a href="workshops/workshop_01_dice_roll.py" class="file-btn">📄 workshop_01_dice_roll.py</a>
+      </div>
+      <div class="illust">🎲</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">10 min</div></div></div>
+      <div class="info"><div class="ico">👥</div><div><div class="label">Format</div><div class="value">Solo</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">while + random</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Workshop 1 · Dice Roll</span>
+    <span>08 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 9. QUIZ 1 — while ══ -->
+<section class="slide quiz">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:var(--yellow);color:var(--ink)">Quick Quiz</span></div>
+  </div>
+  <div class="pad" style="padding-top: 130px;">
+    <div class="eyebrow">⚡ Quick Quiz · while loop</div>
+    <h2 class="question">How many times <span class="ac-y">does it print?</span></h2>
+    <div class="q-code"><span style="color:#9cb4ff">x</span> = <span style="color:#ffc94a">0</span>
+<span style="color:#ff7a85">while</span> <span style="color:#9cb4ff">x</span> &lt; <span style="color:#ffc94a">3</span>:
+    <span style="color:#ffd479">print</span>(<span style="color:#9cb4ff">x</span>)
+    <span style="color:#9cb4ff">x</span> = <span style="color:#9cb4ff">x</span> + <span style="color:#ffc94a">1</span></div>
+    <div class="options">
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">A</div>
+        <div class="text code-text">2 times (1, 2)</div>
+      </div>
+      <div class="opt" data-correct="true" onclick="revealQuiz(this)">
+        <div class="letter">B</div>
+        <div class="text code-text">3 times (0, 1, 2)</div>
+      </div>
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">C</div>
+        <div class="text code-text">4 times (0, 1, 2, 3)</div>
+      </div>
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">D</div>
+        <div class="text">∞ infinite loop 💥</div>
+      </div>
+    </div>
+    <div class="quiz-hint">👆 Tap any · Loop stops when x &lt; 3 becomes False (x=3 → stop)</div>
+  </div>
+  <div class="chrome-bot">
+    <span>Quiz 1 · while basics</span>
+    <span>09 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 10. SECTION 2 — for vs while ══ -->
+<section class="slide section-divider">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Part 2 of 3</div>
+  </div>
+  <div class="num">02</div>
+  <div class="pad" style="padding-top: 520px;">
+    <div class="eyebrow">PART TWO · for vs while</div>
+    <h2 class="h-title" style="max-width: 1400px;">Two loops —<br>which <span class="ac-y">to use?</span></h2>
+    <p style="font-family:var(--font-mono);font-size:32px;color:rgba(255,255,255,0.6);margin-top:24px">count known? for &nbsp; · &nbsp; depends? while</p>
+    <div class="progress">
+      <div class="dot done"></div>
+      <div class="dot now"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Section 02 · for vs while</span>
+    <span>10 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 11. CONCEPT — for vs while ══ -->
+<section class="slide concept">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">When to use which</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🆚 Both can do the same job — pick wisely</div>
+    <h2 class="h-big" style="max-width: 1600px;">Ask yourself:<br><span class="ac">do I know the count?</span></h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:40px;flex:1">
+      <!-- for column -->
+      <div style="background:#fff;border:2px solid var(--ink);border-radius:20px;padding:30px;box-shadow:8px 8px 0 var(--ink)">
+        <div style="display:inline-block;background:var(--py-blue);color:#fff;padding:6px 14px;border-radius:999px;font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px">for ✓</div>
+        <h3 style="font-family:var(--font-display);font-size:32px;margin-bottom:14px">Known count</h3>
+        <p style="font-size:18px;color:var(--ink-2);line-height:1.55;margin-bottom:14px">When you know <strong>how many rounds</strong> ahead of time.</p>
+        <div style="background:var(--ink);color:#7ed4a5;padding:14px 18px;border-radius:10px;font-family:var(--font-mono);font-size:15px;line-height:1.5">
+          <span style="color:#ff7a85">for</span> <span style="color:#9cb4ff">i</span> <span style="color:#ff7a85">in</span> <span style="color:#ffd479">range</span>(<span style="color:#ffc94a">10</span>):<br>
+          &nbsp;&nbsp;<span style="color:#ffd479">print</span>(<span style="color:#9cb4ff">i</span>)
+        </div>
+        <ul style="margin-top:14px;font-size:15px;list-style:none;color:var(--ink-2);line-height:1.8">
+          <li>✓ Loop a list</li>
+          <li>✓ Times table (1-12)</li>
+          <li>✓ Print 30 students</li>
+        </ul>
+      </div>
+      <!-- while column -->
+      <div style="background:#fff2ca;border:2px solid var(--ink);border-radius:20px;padding:30px;box-shadow:8px 8px 0 var(--ink)">
+        <div style="display:inline-block;background:#b45309;color:#fff;padding:6px 14px;border-radius:999px;font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px">while ⭐</div>
+        <h3 style="font-family:var(--font-display);font-size:32px;margin-bottom:14px">Unknown count</h3>
+        <p style="font-size:18px;color:var(--ink-2);line-height:1.55;margin-bottom:14px">When you stop <strong>based on a condition</strong>.</p>
+        <div style="background:var(--ink);color:#7ed4a5;padding:14px 18px;border-radius:10px;font-family:var(--font-mono);font-size:15px;line-height:1.5">
+          <span style="color:#ff7a85">while</span> <span style="color:#9cb4ff">dice</span> != <span style="color:#ffc94a">6</span>:<br>
+          &nbsp;&nbsp;<span style="color:#9cb4ff">dice</span> = <span style="color:#ffd479">roll</span>()
+        </div>
+        <ul style="margin-top:14px;font-size:15px;list-style:none;color:var(--ink-2);line-height:1.8">
+          <li>✓ Roll until 6</li>
+          <li>✓ Guess until correct</li>
+          <li>✓ Login retry until valid</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>for = count · while = condition</span>
+    <span>11 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 12. WORKSHOP 2 — Same problem 2 ways ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill">Workshop 2</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Hands-on · Workshop 2</div>
+    <h2 class="h-title" style="max-width: 1400px;">Same problem,<br><span class="ac">two ways.</span> 🔁</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">Count 1 to 10 — first with <strong>for</strong>, then with <strong>while</strong>.</p>
+        <p class="body" style="margin-top:14px">Same output, different code — see how they compare!</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>Version A: <code style="font-family:var(--font-mono)">for i in range(1, 11)</code></div>
+          <div class="check"><div class="box"></div>Version B: <code style="font-family:var(--font-mono)">while i &lt;= 10</code></div>
+          <div class="check"><div class="box"></div>Compare which is cleaner here</div>
+          <div class="check"><div class="box"></div>(Bonus) Try counting backwards 10→1</div>
+        </div>
+        <a href="workshops/workshop_02_count_two_ways.py" class="file-btn">📄 workshop_02_count_two_ways.py</a>
+      </div>
+      <div class="illust" style="background:#dcf0e4">🔁</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">15 min</div></div></div>
+      <div class="info"><div class="ico">👥</div><div><div class="label">Format</div><div class="value">Solo</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">Compare loops</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Workshop 2 · 2 ways</span>
+    <span>12 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 13. MINI — For or While ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:#2e7d32">Mini</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Mini · Pick the right loop</div>
+    <h2 class="h-title" style="max-width: 1400px;">For or <span class="ac">While?</span> 🤔</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">5 problems — for each one, decide which loop you'd use and <strong>why</strong>.</p>
+        <p class="body" style="margin-top:14px">Test your judgment — there's a right answer!</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>Print times table 7 (1-12)</div>
+          <div class="check"><div class="box"></div>Ask password until correct</div>
+          <div class="check"><div class="box"></div>Greet 25 students by name</div>
+          <div class="check"><div class="box"></div>Save money until 1000 baht</div>
+          <div class="check"><div class="box"></div>Sum a list of scores</div>
+        </div>
+        <a href="workshops/mini_for_vs_while.py" class="file-btn">📄 mini_for_vs_while.py</a>
+      </div>
+      <div class="illust" style="background:#fff2ca;font-size:140px">🤔</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">10 min</div></div></div>
+      <div class="info"><div class="ico">👥</div><div><div class="label">Format</div><div class="value">Pair work OK</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">Judgment</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Mini · For vs While</span>
+    <span>13 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 14. SECTION 3 — Project ══ -->
+<section class="slide section-divider">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Part 3 of 3</div>
+  </div>
+  <div class="num">03</div>
+  <div class="pad" style="padding-top: 520px;">
+    <div class="eyebrow">🎯 PROJECT · Real game</div>
+    <h2 class="h-title" style="max-width: 1400px;">Guess the<br><span class="ac-y">number!</span></h2>
+    <p style="font-family:var(--font-mono);font-size:32px;color:rgba(255,255,255,0.6);margin-top:24px">while + random + hints</p>
+    <div class="progress">
+      <div class="dot done"></div>
+      <div class="dot done"></div>
+      <div class="dot now"></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Section 03 · Guess Number</span>
+    <span>14 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 15. PROJECT — Guess the Number ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:var(--ink)">🎯 Project</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🎯 Project · 25 min</div>
+    <h2 class="h-title" style="max-width: 1400px;">Guess the <span class="ac">Number.</span> 🎯</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">Computer picks a random number <strong>1-100</strong>. Player guesses → get "too high" / "too low" hints → guess until correct!</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>secret = random.randint(1, 100)</div>
+          <div class="check"><div class="box"></div>Count attempts in a variable</div>
+          <div class="check"><div class="box"></div>while guess != secret</div>
+          <div class="check"><div class="box"></div>if guess &lt; secret → "too low"</div>
+          <div class="check"><div class="box"></div>elif guess &gt; secret → "too high"</div>
+          <div class="check"><div class="box"></div>🏠 Play with parents — challenge!</div>
+        </div>
+        <a href="workshops/project_guess_number.py" class="file-btn">🎯 project_guess_number.py</a>
+      </div>
+      <div class="illust" style="background:linear-gradient(135deg,var(--py-blue),var(--py-blue-dark));color:#fff;font-size:140px">🎯</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">25 min</div></div></div>
+      <div class="info"><div class="ico">🏠</div><div><div class="label">Share</div><div class="value">Play with family!</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">while + random + if</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Project · Guess the Number</span>
+    <span>15 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 16. QUIZ 2 — random ══ -->
+<section class="slide quiz">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:var(--yellow);color:var(--ink)">Final Quiz</span></div>
+  </div>
+  <div class="pad" style="padding-top: 130px;">
+    <div class="eyebrow">⚡ Final Quiz · random</div>
+    <h2 class="question">What does <span class="ac-y">randint(1, 6)</span> give?</h2>
+    <div class="q-code"><span style="color:#ff7a85">import</span> <span style="color:#9cb4ff">random</span>
+<span style="color:#9cb4ff">n</span> = <span style="color:#9cb4ff">random</span>.<span style="color:#ffd479">randint</span>(<span style="color:#ffc94a">1</span>, <span style="color:#ffc94a">6</span>)</div>
+    <div class="options">
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">A</div>
+        <div class="text code-text">A random number 1-5</div>
+      </div>
+      <div class="opt" data-correct="true" onclick="revealQuiz(this)">
+        <div class="letter">B</div>
+        <div class="text code-text">A random integer 1-6 (both included)</div>
+      </div>
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">C</div>
+        <div class="text code-text">A random decimal 1.0-6.0</div>
+      </div>
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">D</div>
+        <div class="text">Always 6 🎲</div>
+      </div>
+    </div>
+    <div class="quiz-hint">👆 Tap any · randint(a, b) — both a and b are INCLUDED (unlike range!)</div>
+  </div>
+  <div class="chrome-bot">
+    <span>Quiz 2 · randint bounds</span>
+    <span>16 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 17. HOMEWORK ══ -->
+<section class="slide homework">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Homework · 3 levels</div>
+  </div>
+  <div class="pad" style="padding-top: 120px;">
+    <div class="eyebrow">📚 Homework · Pick your level</div>
+    <h2 class="h-big">Take it <span class="ac">home.</span> 📖</h2>
+    <div class="hw-grid">
+      <!-- HW1 -->
+      <div class="hw-card">
+        <div class="hw-tag">HW1 · Required</div>
+        <h3>❓ Capital Quiz</h3>
+        <p class="hw-task">Ask "What's the capital of Thailand?" → keep asking <strong>until they answer "Bangkok"</strong>. Use <code style="background:#fff2ca;padding:1px 5px;border-radius:3px;font-family:var(--font-mono);font-size:14px">while</code>.</p>
+        <div class="hw-sub">Example Output</div>
+<div class="hw-example"><span class="tk-cm"># Interaction:</span>
+What's the capital? <span class="tk-str">Phuket</span>
+❌ Try again!
+What's the capital? <span class="tk-str">Chiang Mai</span>
+❌ Try again!
+What's the capital? <span class="tk-str">Bangkok</span>
+✅ Correct!</div>
+        <div class="hw-bonus">
+          <strong>🎁 Bonus:</strong> Accept "bangkok" or "BANGKOK" too — use <code style="font-family:var(--font-mono);font-size:12px">.lower()</code>.
+        </div>
+        <div class="hw-foot">
+          <span class="hw-stars">⭐⭐</span>
+          <a href="workshops/hw1_capital_quiz.py" class="hw-btn">📄 Open file</a>
+        </div>
+      </div>
+      <!-- HW2 -->
+      <div class="hw-card mid">
+        <div class="hw-tag">HW2 · Advanced</div>
+        <h3>🎯 Guess + Count</h3>
+        <p class="hw-task">Like the project — but also <strong>count guesses</strong>. If ≤ 5 → "🎉 Amazing!", else "Good try!".</p>
+        <div class="hw-sub">Example Output</div>
+<div class="hw-example"><span class="tk-cm"># Computer picks 42</span>
+Guess: <span class="tk-num">50</span>  → too high
+Guess: <span class="tk-num">25</span>  → too low
+Guess: <span class="tk-num">40</span>  → too low
+Guess: <span class="tk-num">42</span>  → ✓ correct!
+<span class="tk-cm"># Got it in 4 guesses → 🎉 Amazing!</span></div>
+        <div class="hw-bonus">
+          <strong>🎁 Bonus:</strong> Give up after 10 guesses — reveal the answer.
+        </div>
+        <div class="hw-foot">
+          <span class="hw-stars">⭐⭐⭐</span>
+          <a href="workshops/hw2_guess_count.py" class="hw-btn">📄 Open file</a>
+        </div>
+      </div>
+      <!-- HW3 -->
+      <div class="hw-card hard">
+        <div class="hw-tag">HW3 · Expert</div>
+        <h3>🪨📄✂️ Rock Paper Scissors</h3>
+        <p class="hw-task">Play <strong>5 rounds</strong> vs computer. Track wins/losses/ties. Use <code style="background:#fff2ca;padding:1px 5px;border-radius:3px;font-family:var(--font-mono);font-size:14px">random.choice()</code>. Print final score.</p>
+        <div class="hw-sub">Example Output</div>
+<div class="hw-example"><span class="tk-cm"># Round 1:</span>
+Your move? <span class="tk-str">rock</span>
+🤖 chose: <span class="tk-str">scissors</span>
+✅ You win!
+<span class="tk-cm"># ... 5 rounds total</span>
+<span class="tk-cm"># 📊 Final: You 3 · Tie 1 · CPU 1</span></div>
+        <div class="hw-bonus">
+          <strong>🎁 Bonus:</strong> Use <code style="font-family:var(--font-mono);font-size:12px">while</code> instead of for — play until someone reaches 3 wins!
+        </div>
+        <div class="hw-foot">
+          <span class="hw-stars">⭐⭐⭐⭐⭐</span>
+          <a href="workshops/hw3_rock_paper_scissors.py" class="hw-btn">📄 Open file</a>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:24px;padding:16px 24px;background:var(--yellow);border:2px solid var(--ink);border-radius:14px;display:flex;align-items:center;gap:14px;box-shadow:4px 4px 0 var(--ink)">
+      <span style="font-size:22px">📌</span>
+      <span style="font-size:18px;font-weight:600;font-family:var(--font-display)">Submit: Trinket link OR screenshot → LINE group · Deadline: before next session</span>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Homework · 3 levels</span>
+    <span>17 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 18. WRAP UP ══ -->
+<section class="slide recap">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Wrap up</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🎉 Today you mastered</div>
+    <h2 class="h-title" style="max-width: 1600px;">Two loops,<br><span class="ac">two superpowers!</span></h2>
+    <div class="big-list">
+      <div class="item">
+        <div class="num">01</div>
+        <div class="text">while loop — run until condition is False<span>perfect for "until something happens"</span></div>
+      </div>
+      <div class="item">
+        <div class="num">02</div>
+        <div class="text">random.randint() / random.choice()<span>for games and unpredictable behavior</span></div>
+      </div>
+      <div class="item">
+        <div class="num">03</div>
+        <div class="text">for vs while — pick the right tool<span>count known? for · depends? while</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Wrap up</span>
+    <span>18 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 19. GOODBYE ══ -->
+<section class="slide qa">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">See you next week</div>
+  </div>
+  <div class="emoji-party">
+    <div class="e e-main">🎲</div>
+    <div class="e e-1">🎯</div>
+  </div>
+  <div class="pad" style="padding-top: 200px;position:relative;z-index:1">
+    <div class="eyebrow">Session 05 · Complete</div>
+    <h1 class="h-hero" style="max-width:1200px">Loop<br><span class="ac-y">picker!</span></h1>
+    <p class="sub">Today you used <strong>while</strong> to loop until something happens — plus random!<br>Next session: <strong>Review &amp; Challenge</strong> — Boss Battle time! 🏆</p>
+    <div class="emoji-badges">
+      <span class="b">🔄</span>
+      <span class="b">🎲</span>
+      <span class="b">🆚</span>
+      <span class="b">🎯</span>
+    </div>
+    <div style="margin-top:auto;display:flex;gap:24px;flex-wrap:wrap">
+      <div style="background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.2);border-radius:20px;padding:24px 28px;flex:1;min-width:340px;backdrop-filter:blur(10px)">
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px">🏠 Take home</div>
+        <div style="font-family:var(--font-display);font-size:26px;line-height:1.25">Pick HW1 / HW2 / HW3 → Trinket link to LINE</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.2);border-radius:20px;padding:24px 28px;flex:1;min-width:340px;backdrop-filter:blur(10px)">
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px">🔮 Next week</div>
+        <div style="font-family:var(--font-display);font-size:26px;line-height:1.25">Session 06<br>Review &amp; Boss Battle! 🏆</div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>CodeLab Thailand · Python F2</span>
+    <span>19 / 19</span>
+  </div>
+</section>
+
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let idx = 0;
+  document.getElementById('total').textContent = slides.length;
+  function show(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[i].classList.add('active');
+    document.getElementById('cur').textContent = i + 1;
+    history.replaceState(null, '', '#' + (i + 1));
+  }
+  function next() { if (idx < slides.length - 1) { idx++; show(idx); } }
+  function prev() { if (idx > 0) { idx--; show(idx); } }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { idx = 0; show(idx); }
+    else if (e.key === 'End') { idx = slides.length - 1; show(idx); }
+  });
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!isNaN(hash) && hash >= 1 && hash <= slides.length) idx = hash - 1;
+  show(idx);
+
+  function revealQuiz(el) {
+    const slide = el.closest('.slide');
+    if (!slide) return;
+    slide.querySelectorAll('.opt').forEach(opt => {
+      opt.classList.add('revealed');
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+      else opt.classList.add('wrong');
+    });
+  }
+</script>
+</body>
+</html>

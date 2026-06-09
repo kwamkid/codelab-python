@@ -1,0 +1,39 @@
+# ────────────────────────────────────────────────────────────
+# CodeLab Thailand · Python Course Hosting
+# Apache config (SiteGround / shared hosting)
+# ────────────────────────────────────────────────────────────
+
+# Force UTF-8 for everything served as text
+AddDefaultCharset UTF-8
+
+# Treat .py / .md / .txt as plain text (browser-viewable) + UTF-8
+AddType "text/plain; charset=UTF-8" .py
+AddType "text/plain; charset=UTF-8" .md
+AddType "text/plain; charset=UTF-8" .txt
+
+# Explicit charset directive (belt + suspenders)
+AddCharset UTF-8 .py .md .txt .html .htm .css .js .json .svg
+
+# Allow direct viewing of .py files (some hosts try to execute them)
+<FilesMatch "\.py$">
+    SetHandler default-handler
+    ForceType text/plain
+    Header set Content-Type "text/plain; charset=UTF-8"
+</FilesMatch>
+
+# Same protection for .md files
+<FilesMatch "\.md$">
+    SetHandler default-handler
+    ForceType text/plain
+    Header set Content-Type "text/plain; charset=UTF-8"
+</FilesMatch>
+
+# Cache headers (optional — but speeds up font/logo loading)
+<FilesMatch "\.(svg|ttf|woff|woff2)$">
+    Header set Cache-Control "public, max-age=2592000"
+</FilesMatch>
+
+# CORS for fonts (just in case)
+<FilesMatch "\.(ttf|woff|woff2)$">
+    Header set Access-Control-Allow-Origin "*"
+</FilesMatch>

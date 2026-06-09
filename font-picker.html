@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CodeLab · Font Picker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Fira+Code:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Source+Code+Pro:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;700&family=Manrope:wght@400;600;700;800&family=Outfit:wght@400;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --red: #ef443a;
+    --ink: #0a0a0b;
+    --cream: #fff8f3;
+    --yellow: #ffc94a;
+    --muted: #6b6460;
+    --border: #e8e0d3;
+  }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: "Inter", system-ui, sans-serif;
+    padding: 60px 80px;
+    min-height: 100vh;
+  }
+  .header {
+    margin-bottom: 60px;
+    padding-bottom: 24px;
+    border-bottom: 3px solid var(--ink);
+  }
+  .header h1 {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+  }
+  .header p {
+    font-size: 18px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .font-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .font-card {
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 24px;
+    padding: 36px 44px;
+    box-shadow: 8px 8px 0 var(--ink);
+    position: relative;
+  }
+  .font-card .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--ink); color: #fff;
+    padding: 5px 14px; border-radius: 999px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .font-card .badge.current { background: var(--red); }
+  .font-card h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .font-card .meta {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    font-family: "JetBrains Mono", monospace;
+  }
+  .sample {
+    line-height: 1;
+    margin-bottom: 18px;
+  }
+  .sample-big {
+    font-size: 88px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+  }
+  .sample-med {
+    font-size: 36px;
+    font-weight: 700;
+    margin-top: 14px;
+    color: var(--red);
+  }
+  .sample-code {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 18px;
+    background: var(--ink);
+    color: #f4ecdf;
+    padding: 14px 20px;
+    border-radius: 10px;
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+  .sample-code .kw { color: #ff7a85; }
+  .sample-code .fn { color: #ffd479; }
+  .sample-code .num { color: #ffc94a; }
+  .sample-code .str { color: #7ed4a5; }
+  .pros {
+    margin-top: 14px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .pros strong { color: var(--ink); }
+  .pick-btn {
+    position: absolute; top: 28px; right: 28px;
+    background: var(--yellow); border: 2px solid var(--ink);
+    border-radius: 999px; padding: 10px 22px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px; font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .pick-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+
+  /* Each font definition */
+  .f-jetbrains  { font-family: "JetBrains Mono", monospace; }
+  .f-space-mono { font-family: "Space Mono", monospace; }
+  .f-ibm-mono   { font-family: "IBM Plex Mono", monospace; }
+  .f-fira       { font-family: "Fira Code", monospace; }
+  .f-dm-mono    { font-family: "DM Mono", monospace; }
+  .f-source     { font-family: "Source Code Pro", monospace; }
+  .f-geist-mono { font-family: "Geist Mono", monospace; }
+  .f-inter      { font-family: "Inter", sans-serif; }
+  .f-manrope    { font-family: "Manrope", sans-serif; }
+  .f-outfit     { font-family: "Outfit", sans-serif; }
+  .f-sora       { font-family: "Sora", sans-serif; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Font Picker — CodeLab Decks</h1>
+  <p>Same heading, 11 fonts. Click a sample to see <code>type()</code> and <code>range()</code> rendering. Pick the one you like — tell me the name and I'll apply it to <code>style.css</code>.</p>
+</div>
+
+<div class="font-grid">
+
+  <!-- 1. JetBrains Mono (current) -->
+  <div class="font-card">
+    <div class="badge current">⭐ Current</div>
+    <h2>1. JetBrains Mono</h2>
+    <div class="meta">mono · used in PyCharm/IntelliJ · ligatures</div>
+    <div class="sample sample-big f-jetbrains">For Loops go deep.</div>
+    <div class="sample sample-med f-jetbrains">range() — type() — print()</div>
+    <div class="sample-code f-jetbrains">
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):  <span style="color:#6b7280">// the coder font</span>
+    </div>
+    <div class="pros">
+      <strong>✓ Pros:</strong> Authentic coder vibe, strong tech association, clear parens<br>
+      <strong>✗ Cons:</strong> Mono can feel narrow/cramped at hero size, less personality
+    </div>
+  </div>
+
+  <!-- 2. Space Mono -->
+  <div class="font-card">
+    <div class="badge">Retro hacker</div>
+    <h2>2. Space Mono</h2>
+    <div class="meta">mono · Google Fonts · slab-mono</div>
+    <div class="sample sample-big f-space-mono">For Loops go deep.</div>
+    <div class="sample sample-med f-space-mono">range() — type() — print()</div>
+    <div class="sample-code f-space-mono">
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):  <span style="color:#6b7280">// retro vibes</span>
+    </div>
+    <div class="pros">
+      <strong>✓ Pros:</strong> Distinctive personality, retro-hacker feel, fun for kids<br>
+      <strong>✗ Cons:</strong> Slab style might feel less "modern"
+    </div>
+  </div>
+
+  <!-- 3. IBM Plex Mono -->
+  <div class="font-card">
+    <div class="badge">Corporate tech</div>
+    <h2>3. IBM Plex Mono</h2>
+    <div class="meta">mono · IBM open source</div>
+    <div class="sample sample-big f-ibm-mono">For Loops go deep.</div>
+    <div class="sample sample-med f-ibm-mono">range() — type() — print()</div>
+    <div class="sample-code f-ibm-mono">
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):  <span style="color:#6b7280">// classic IBM</span>
+    </div>
+    <div class="pros">
+      <strong>✓ Pros:</strong> Professional, balanced, very readable<br>
+      <strong>✗ Cons:</strong> A bit more corporate, less playful
+    </div>
+  </div>
+
+  <!-- 4. Fira Code -->
+  <div class="font-card">
+    <div class="badge">VS Code popular</div>
+    <h2>4. Fira Code</h2>
+    <div class="meta">mono · ligatures · Mozilla heritage</div>
+    <div class="sample sample-big f-fira">For Loops go deep.</div>
+    <div class="sample sample-med f-fira">range() — type() — print()</div>
+    <div class="sample-code f-fira">
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):  <span style="color:#6b7280">// developer favourite</span>
+    </div>
+    <div class="pros">
+      <strong>✓ Pros:</strong> Most popular VS Code font (kids might recognize it!), great ligatures<br>
+      <strong>✗ Cons:</strong> Similar feel to JetBrains Mono
+    </div>
+  </div>
+
+  <!-- 5. Geist Mono -->
+  <div class="font-card">
+    <div class="badge">Modern startup</div>
+    <h2>5. Geist Mono</h2>
+    <div class="meta">mono · Vercel · 2023</div>
+    <div class="sample sample-big f-geist-mono">For Loops go deep.</div>
+    <div class="sample sample-med f-geist-mono">range() — type() — print()</div>
+    <div class="sample-code f-geist-mono">
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):  <span style="color:#6b7280">// sleek &amp; minimal</span>
+    </div>
+    <div class="pros">
+      <strong>✓ Pros:</strong> Sleekest modern mono, geometric, very clean<br>
+      <strong>✗ Cons:</strong> Might feel too sterile/cold for kids
+    </div>
+  </div>
+
+  <!-- 6. DM Mono -->
+  <div class="font-card">
+    <div class="badge">Minimal mono</div>
+    <h2>6. DM Mono</h2>
+    <div class="meta">mono · Google Fonts · Roboto Mono successor</div>
+    <div class="sample sample-big f-dm-mono">For Loops go deep.</div>
+    <div class="sample sample-med f-dm-mono">range() — type() — print()</div>
+    <div class="sample-code f-dm-mono">
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):  <span style="color:#6b7280">// clean &amp; neutral</span>
+    </div>
+    <div class="pros">
+      <strong>✓ Pros:</strong> Clean, neutral, easy to read<br>
+      <strong>✗ Cons:</strong> Only 400/500 weights — less display impact
+    </div>
+  </div>
+
+  <!-- 7. Source Code Pro -->
+  <div class="font-card">
+    <div class="badge">Adobe classic</div>
+    <h2>7. Source Code Pro</h2>
+    <div class="meta">mono · Adobe open source</div>
+    <div class="sample sample-big f-source">For Loops go deep.</div>
+    <div class="sample sample-med f-source">range() — type() — print()</div>
+    <div class="sample-code f-source">
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):  <span style="color:#6b7280">// adobe classic</span>
+    </div>
+    <div class="pros">
+      <strong>✓ Pros:</strong> Heavy weights available, friendly curves<br>
+      <strong>✗ Cons:</strong> Less distinctive
+    </div>
+  </div>
+
+  <!-- 8. Inter (sans) -->
+  <div class="font-card">
+    <div class="badge">Universal sans</div>
+    <h2>8. Inter</h2>
+    <div class="meta">sans · used by Linear, GitHub, Vercel</div>
+    <div class="sample sample-big f-inter">For Loops go deep.</div>
+    <div class="sample sample-med f-inter">range() — type() — print()</div>
+    <div class="sample-code f-inter">
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):  <span style="color:#6b7280">// universal modern</span>
+    </div>
+    <div class="pros">
+      <strong>✓ Pros:</strong> Universal, works at any size, parens are clear<br>
+      <strong>✗ Cons:</strong> Less coding-specific feel
+    </div>
+  </div>
+
+  <!-- 9. Manrope -->
+  <div class="font-card">
+    <div class="badge">Friendly tech</div>
+    <h2>9. Manrope</h2>
+    <div class="meta">sans · variable · open source</div>
+    <div class="sample sample-big f-manrope">For Loops go deep.</div>
+    <div class="sample sample-med f-manrope">range() — type() — print()</div>
+    <div class="sample-code f-manrope">
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):  <span style="color:#6b7280">// friendly &amp; modern</span>
+    </div>
+    <div class="pros">
+      <strong>✓ Pros:</strong> Warm and modern, kid-friendly<br>
+      <strong>✗ Cons:</strong> No coding feel
+    </div>
+  </div>
+
+  <!-- 10. Outfit -->
+  <div class="font-card">
+    <div class="badge">Geometric</div>
+    <h2>10. Outfit</h2>
+    <div class="meta">sans · geometric · 2021</div>
+    <div class="sample sample-big f-outfit">For Loops go deep.</div>
+    <div class="sample sample-med f-outfit">range() — type() — print()</div>
+    <div class="sample-code f-outfit">
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):  <span style="color:#6b7280">// geometric vibe</span>
+    </div>
+    <div class="pros">
+      <strong>✓ Pros:</strong> Bold and geometric, modern startup feel<br>
+      <strong>✗ Cons:</strong> No coding feel
+    </div>
+  </div>
+
+  <!-- 11. Sora -->
+  <div class="font-card">
+    <div class="badge">Tech sans</div>
+    <h2>11. Sora</h2>
+    <div class="meta">sans · variable · designed for tech</div>
+    <div class="sample sample-big f-sora">For Loops go deep.</div>
+    <div class="sample sample-med f-sora">range() — type() — print()</div>
+    <div class="sample-code f-sora">
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):  <span style="color:#6b7280">// modern + clean</span>
+    </div>
+    <div class="pros">
+      <strong>✓ Pros:</strong> Modern, balanced, slight tech feel<br>
+      <strong>✗ Cons:</strong> Less distinctive than mono options
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:80px;padding:32px;background:var(--ink);color:#fff;border-radius:24px;text-align:center">
+  <h3 style="font-family:'JetBrains Mono',monospace;font-size:24px;margin-bottom:14px">💬 Pick one</h3>
+  <p style="font-size:18px;line-height:1.5;color:rgba(255,255,255,0.85)">Tell me the <strong>number or name</strong> of the font you like — I'll apply it to <code style="background:#fff;color:var(--ink);padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:15px">style.css</code> immediately.</p>
+  <p style="font-size:14px;color:rgba(255,255,255,0.5);margin-top:14px;font-family:'JetBrains Mono',monospace">My pick: 4. Fira Code (kids see it in VS Code) · or 2. Space Mono (more personality)</p>
+</div>
+
+</body>
+</html>

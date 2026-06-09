@@ -1,0 +1,1548 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>F2 · Session 06 · Survival Challenge — CodeLab Python</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+  /* ── @font-face for local IBM Plex Sans Thai (fallback when offline) ── */
+  @font-face {
+    font-family: "IBM Plex Sans Thai";
+    src: url('../../fonts/IBMPlexSansThai-Regular.ttf') format('truetype');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: "IBM Plex Sans Thai";
+    src: url('../../fonts/IBMPlexSansThai-Medium.ttf') format('truetype');
+    font-weight: 500; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: "IBM Plex Sans Thai";
+    src: url('../../fonts/IBMPlexSansThai-SemiBold.ttf') format('truetype');
+    font-weight: 600; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: "IBM Plex Sans Thai";
+    src: url('../../fonts/IBMPlexSansThai-Bold.ttf') format('truetype');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+
+  :root {
+    --red:       #3776AB;
+    --red-600:   #2d5c8f;
+    --red-50:    #eaf1f8;
+    --ink:       #0a0a0b;
+    --ink-2:     #1f2027;
+    --cream:     #fff8f3;
+    --cream-2:   #ffeee2;
+    --yellow:    #ffd43b;
+    --yellow-d:  #eab308;
+    --mint:      #5dd49e;
+    --mint-d:    #16a34a;
+    --sky:       #5fb3ff;
+    --sky-d:     #2d5c8f;
+    --plum:      #8b5cf6;
+    --plum-d:    #6d28d9;
+    --pink:      #ff7ac6;
+    --pink-d:    #db2777;
+    --border:    #e8e0d3;
+    --muted:     #6b6460;
+
+    --font-display: "Space Grotesk", "IBM Plex Sans Thai", system-ui, sans-serif;
+    --font-sans:    "IBM Plex Sans Thai", "Inter", system-ui, sans-serif;
+    --font-mono:    "JetBrains Mono", ui-monospace, Menlo, monospace;
+    --font-hand:    "Caveat", "IBM Plex Sans Thai", cursive;
+
+    /* Tweakable scales — default 1; tweaks panel adjusts */
+    --scale-body:  1;
+    --scale-title: 1;
+  }
+
+  html, body { margin: 0; padding: 0; background: #000; color: var(--ink); }
+  body { font-family: var(--font-sans); }
+
+  /* ── Slide base ────────────────────────────────────────── */
+  section.slide {
+    position: relative; overflow: hidden;
+    background: var(--cream); color: var(--ink);
+  }
+  .slide .pad { padding: 96px 120px; height: 100%; box-sizing: border-box; display:flex; flex-direction:column; position: relative; z-index: 2;}
+
+  /* ── ANIMATIONS — reduced set ───────────────────────────
+   * V1 keeps a few signature motions, removes ambient noise. */
+  @keyframes drift       { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-8px);} }
+  @keyframes pulse-soft  { 0%,100% { transform: scale(1);} 50% { transform: scale(1.04);} }
+  @keyframes blink-led   { 0%,49% { opacity: 1;} 50%,100% { opacity: 0.3;} }
+  @keyframes rise-in     { from { transform: translateY(28px); opacity: 0;} to { transform: translateY(0); opacity: 1;} }
+  @keyframes settle-in   { 0% { transform: scale(0.85); opacity: 0;} 60% { transform: scale(1.03); opacity: 1;} 100% { transform: scale(1); opacity: 1;} }
+  @keyframes line-grow   { from { transform: scaleX(0);} to { transform: scaleX(1);} }
+
+  [data-deck-active] .anim-drift  { animation: drift 4.5s ease-in-out infinite; }
+  [data-deck-active] .anim-pulse  { animation: pulse-soft 3s ease-in-out infinite; transform-origin: center; }
+  [data-deck-active] .anim-blink  { animation: blink-led 1.2s steps(1, end) infinite; }
+  [data-deck-active] .anim-rise   { animation: rise-in 0.7s cubic-bezier(.2,.7,.2,1) backwards; }
+  [data-deck-active] .anim-settle { animation: settle-in 0.6s cubic-bezier(.4,1.5,.5,1) backwards; }
+  [data-deck-active] .anim-line   { animation: line-grow 0.7s cubic-bezier(.4,.8,.3,1) backwards; transform-origin: left center; }
+
+  .d1 { animation-delay: 0.12s !important; }
+  .d2 { animation-delay: 0.24s !important; }
+  .d3 { animation-delay: 0.36s !important; }
+  .d4 { animation-delay: 0.48s !important; }
+  .d5 { animation-delay: 0.60s !important; }
+
+  /* ── Chrome (slimmer) ───────────────────────────────────── */
+  .chrome-top {
+    position: absolute; top: 44px; left: 120px; right: 120px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 16px; color: var(--muted);
+    z-index: 5;
+  }
+  .chrome-top .brand { display:flex; align-items:center; gap: 12px; }
+  .chrome-top .brand-logo {
+    display: block;
+    width: 140px; height: 32px;
+    position: relative;
+  }
+  .chrome-top .brand-logo img {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: block;
+    object-fit: contain;
+    object-position: left center;
+  }
+  /* Default: show color logo, hide white */
+  .chrome-top .brand-logo .logo-white { display: none; }
+
+  /* On dark backgrounds (cover, quiz, parent, boss): swap */
+  .cover .brand-logo .logo-color,
+  .quiz .brand-logo .logo-color,
+  .parent .brand-logo .logo-color { display: none; }
+  .cover .brand-logo .logo-white,
+  .quiz .brand-logo .logo-white,
+  .parent .brand-logo .logo-white { display: block; }
+  /* logo ขาวจริงบนพื้นเข้ม (svg ไม่มี fill → force ขาวด้วย filter) + ไม่มีกล่องขาว */
+  .cover .brand-logo .logo-white,
+  .quiz .brand-logo .logo-white,
+  .parent .brand-logo .logo-white { filter: brightness(0) invert(1); }
+  .chrome-top .crumb {
+    display:inline-flex; align-items:center; gap:8px;
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .chrome-top .crumb::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+  .chrome-bot {
+    position: absolute; bottom: 44px; left: 120px; right: 120px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--font-mono); font-size: 13px; color: var(--muted);
+    z-index: 5;
+  }
+  .chrome-bot > span { white-space: nowrap; }
+
+  /* ── Accents ───────────────────────────────────────────── */
+  .ac    { color: var(--red); }
+  .ac-y  { color: var(--yellow-d); }
+  .ac-m  { color: var(--mint-d); }
+  .ac-p  { color: var(--plum-d); }
+  .ac-hl {
+    /* Highlighter band positioned in em units \u2014 stays put across line-heights & font sizes */
+    background-image: linear-gradient(180deg, var(--yellow) 0, var(--yellow) 100%);
+    background-size: 100% 0.35em;
+    background-position: 0 0.78em;
+    background-repeat: no-repeat;
+    padding: 0 0.12em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans); font-size: 19px; font-weight: 600;
+    letter-spacing: normal; text-transform: uppercase;
+    color: var(--red); margin-bottom: 28px;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .eyebrow::before {
+    content: ""; width: 28px; height: 3px; background: var(--red);
+  }
+
+  .h-hero  { font-family: var(--font-display); font-weight: 700; font-size: calc(180px * var(--scale-title)); line-height: 0.88; letter-spacing: -0.045em; color: var(--ink); margin: 0; }
+  .h-title { font-family: var(--font-display); font-weight: 700; font-size: calc(120px * var(--scale-title)); line-height: 0.96; letter-spacing: -0.035em; color: var(--ink); margin: 0; }
+  .body    { font-family: var(--font-sans); font-size: calc(28px * var(--scale-body)); line-height: 1.5; color: var(--ink-2); }
+
+  /* ── 1. COVER ─────────────────────────────────────────── */
+  section.slide.cover { background: var(--red); color: #fff; }
+  .cover .chrome-top, .cover .chrome-bot { color: rgba(255,255,255,0.85); }
+  .cover .chrome-top .brand-logo { background-color: transparent; }
+  .cover .chrome-top .crumb::before { background: var(--yellow); }
+  .cover .h-hero { color: #fff; }
+  .cover .eyebrow { color: var(--yellow); }
+  .cover .eyebrow::before { background: var(--yellow); }
+
+  .cover .pad { padding-top: 180px; }
+  .cover h1 { max-width: 1100px; }
+  .cover .tag-row { display:flex; gap: 14px; margin-top: 44px; flex-wrap: wrap; }
+  .cover .tag {
+    display:inline-flex; align-items:center; gap: 10px;
+    padding: 12px 22px; border-radius: 999px;
+    background: rgba(255,255,255,0.08); color: #fff;
+    font-family: var(--font-display); font-weight: 600; font-size: 21px;
+    border: 2px solid rgba(255,255,255,0.35);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+  }
+  .cover .hero-photo .hp-hint { white-space: nowrap; }
+  .cover .tag .tdot { width: 10px; height: 10px; border-radius: 50%; }
+  .cover .meta {
+    margin-top: auto;
+    display: flex; gap: 72px;
+    font-family: var(--font-sans); font-size: 20px; color: rgba(255,255,255,0.95);
+    padding-top: 56px; border-top: 1px solid rgba(255,255,255,0.25);
+    max-width: 800px;
+  }
+  .cover .meta .label { display:block; color: rgba(255,255,255,0.6); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
+
+  /* Right hero — single anchored photo (cleaner than collage) */
+  .cover .hero-photo {
+    position: absolute; right: 120px; top: 200px;
+    width: 460px; height: 580px;
+    border: 3px solid var(--ink); border-radius: 24px;
+    background: rgba(255,255,255,0.08);
+    display:flex; flex-direction: column; align-items:center; justify-content: center;
+    box-shadow: 14px 14px 0 var(--ink);
+    z-index: 3;
+    overflow: hidden;
+  }
+  .cover .hero-photo .hp-icon {
+    width: 148px; height: 148px; border-radius: 50%;
+    background: var(--yellow); border: 3px solid var(--ink);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .cover .hero-photo .hp-icon svg { width: 68px; height: 68px; }
+  .cover .hero-photo .hp-label { font-family: var(--font-display); font-weight: 700; font-size: 30px; color: #fff; margin-top: 20px; }
+  .cover .hero-photo .hp-hint  { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-top: 6px; }
+
+  /* one anchored decorative star — not random confetti */
+  .cover .star-mark {
+    position: absolute; top: 220px; left: 1080px; width: 80px; height: 80px; z-index: 4;
+  }
+
+  /* ── 2. CONCEPT ───────────────────────────────────────── */
+  section.slide.concept { background: var(--cream); }
+  .concept .split {
+    flex: 1;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 96px;
+    align-items: center; margin-top: 48px;
+  }
+  .concept .points { display: flex; flex-direction: column; gap: 36px; }
+  .concept .point { display: flex; gap: 28px; align-items: flex-start; }
+  .concept .point .bullet {
+    flex-shrink: 0; width: 56px; height: 56px; border-radius: 14px;
+    background: var(--red); color: #fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-display); font-weight: 700; font-size: 28px;
+    border: 3px solid var(--ink);
+    margin-top: 6px;
+  }
+  .concept .point:nth-child(2) .bullet { background: var(--yellow); color: var(--ink); }
+  .concept .point:nth-child(3) .bullet { background: var(--plum); color: #fff; }
+  .concept .point h4 { font-family: var(--font-display); font-weight: 700; font-size: calc(34px * var(--scale-title)); margin: 0 0 8px; letter-spacing: -0.015em; }
+  .concept .point p  { font-size: calc(23px * var(--scale-body)); line-height: 1.5; color: var(--ink-2); margin: 0; }
+
+  .concept .diagram-box {
+    background: #fff; border: 3px solid var(--ink); border-radius: 28px;
+    padding: 40px; height: 560px;
+    box-shadow: 12px 12px 0 var(--ink);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .concept .diagram-box .caption {
+    position: absolute; top: 28px; left: 28px;
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* ── 3. QUIZ ──────────────────────────────────────────── */
+  section.slide.quiz { background: var(--sky-d); color: #fff; }
+  .quiz .chrome-top, .quiz .chrome-bot { color: rgba(255,255,255,0.85); }
+  .quiz .chrome-top .brand-logo { background-color: transparent; }
+  .quiz .chrome-top .crumb { color: rgba(255,255,255,0.85); }
+  .quiz .chrome-top .crumb::before { background: var(--yellow); }
+  .quiz .eyebrow { color: var(--yellow); }
+  .quiz .eyebrow::before { background: var(--yellow); }
+
+  .quiz .qno {
+    font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.7); margin-bottom: 18px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .quiz .qno .of {
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .quiz .qno .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.25); border: 2px solid rgba(255,255,255,0.4); }
+  .quiz .qno .dot.active { background: var(--yellow); border-color: var(--yellow); }
+
+  .quiz .question {
+    font-family: var(--font-display); font-weight: 700; font-size: 96px;
+    line-height: 1.02; letter-spacing: -0.025em; color: #fff;
+    margin: 0 0 64px; max-width: 1500px;
+  }
+  .quiz .options { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 1500px; }
+  .quiz .opt {
+    background: #fff; border-radius: 18px;
+    padding: 28px 32px;
+    display: flex; align-items: center; gap: 24px;
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+    transition: transform 200ms;
+  }
+  .quiz .opt .letter {
+    width: 56px; height: 56px; border-radius: 12px;
+    background: var(--ink); color: #fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-display); font-weight: 700; font-size: 28px;
+    flex-shrink: 0;
+  }
+  .quiz .opt .text { font-family: var(--font-display); font-weight: 600; font-size: calc(28px * var(--scale-body)); line-height: 1.2; }
+  .quiz .opt { cursor: pointer; }
+  .quiz .opt:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 rgba(0,0,0,0.3); }
+
+  .quiz .opt.correct { background: var(--mint); }
+  .quiz .opt.correct .letter { background: var(--mint-d); }
+  .quiz .opt.correct::after {
+    content: '✓';
+    margin-left: auto;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--mint-d); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .quiz .opt.wrong { background: #ffd6d6; opacity: 0.85; }
+  .quiz .opt.wrong .letter { background: var(--red); }
+  .quiz .opt.wrong::after {
+    content: '✗';
+    margin-left: auto;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--red); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  /* Timer pill — one anchored UI element, not a sticker */
+  .quiz .timer {
+    position: absolute; top: 200px; right: 120px;
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--yellow); color: var(--ink);
+    border: 3px solid var(--ink); border-radius: 999px;
+    padding: 14px 24px;
+    font-family: var(--font-display); font-weight: 700; font-size: 22px;
+    box-shadow: 5px 5px 0 var(--ink);
+    z-index: 4;
+  }
+  .quiz .timer svg { width: 22px; height: 22px; }
+
+  /* ── 4. RECAP ─────────────────────────────────────────── */
+  section.slide.recap { background: var(--cream); }
+  .recap .big-list { margin-top: 56px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .recap .item {
+    background: #fff; border: 3px solid var(--ink); border-radius: 24px;
+    padding: 38px 36px; position: relative;
+    box-shadow: 10px 10px 0 var(--ink);
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .recap .item:nth-child(1) { background: #fff5d6; }
+  .recap .item:nth-child(2) { background: #d8f5e4; }
+  .recap .item:nth-child(3) { background: #d6ebff; }
+  .recap .item .num {
+    font-family: var(--font-display); font-weight: 700; font-size: 108px;
+    line-height: 0.85; color: var(--red);
+    -webkit-text-stroke: 3px var(--ink);
+    margin: 0;
+  }
+  .recap .item:nth-child(2) .num { color: var(--mint); }
+  .recap .item:nth-child(3) .num { color: var(--sky); }
+  .recap .item .head { font-family: var(--font-display); font-weight: 700; font-size: calc(32px * var(--scale-title)); line-height: 1.15; letter-spacing: -0.015em; }
+  .recap .item .sub  { font-family: var(--font-sans); font-weight: 400; font-size: calc(21px * var(--scale-body)); color: var(--ink-2); line-height: 1.5; }
+
+  .recap .chip-strip {
+    display: flex; gap: 14px; flex-wrap: wrap; margin-top: 44px;
+    padding-top: 36px; border-top: 2px dashed var(--border);
+  }
+  .recap .chip-strip .label {
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+    align-self: center; margin-right: 8px;
+  }
+  .recap .chip {
+    display:inline-flex; align-items:center; gap: 10px;
+    background: #fff; border: 2.5px solid var(--ink); border-radius: 999px;
+    padding: 10px 20px; font-family: var(--font-display); font-weight: 700; font-size: 20px;
+  }
+  .recap .chip .b { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ink); }
+
+  /* ── 5. HOMEWORK ─────────────────────────────────────── */
+  section.slide.homework { background: #ffd43b; }
+  .homework .layout {
+    flex: 1;
+    display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px;
+    margin-top: 48px;
+  }
+  .homework .card {
+    background: #fff; border: 3px solid var(--ink); border-radius: 28px;
+    padding: 48px 52px;
+    box-shadow: 12px 12px 0 var(--ink);
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .homework .tag {
+    display:inline-flex; align-self: flex-start; align-items: center; gap: 8px;
+    background: var(--red); color: #fff;
+    padding: 8px 18px; border-radius: 999px;
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 28px; font-weight: 700;
+    border: 2px solid var(--ink);
+  }
+  .homework .task {
+    font-family: var(--font-display); font-weight: 700; font-size: calc(52px * var(--scale-title));
+    line-height: 1.1; max-width: 700px; margin: 0 0 28px;
+    letter-spacing: -0.02em;
+  }
+  .homework .task-sub {
+    font-size: calc(24px * var(--scale-body)); color: var(--ink-2); line-height: 1.5; max-width: 600px;
+  }
+  .homework .meta-grid {
+    margin-top: auto; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px 40px; padding-top: 32px; border-top: 2px dashed var(--border);
+  }
+  .homework .meta-item .k { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .homework .meta-item .v { font-family: var(--font-display); font-weight: 700; font-size: calc(24px * var(--scale-title)); margin-top: 6px; color: var(--ink); }
+
+  .homework .side {
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .homework .video-ph {
+    flex: 1;
+    background: var(--ink); color: #fff;
+    border: 3px solid var(--ink); border-radius: 24px;
+    box-shadow: 12px 12px 0 var(--red);
+    padding: 36px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .homework .video-ph .play {
+    width: 88px; height: 88px; border-radius: 50%;
+    background: var(--yellow); border: 3px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    margin: auto;
+  }
+  .homework .video-ph .play svg { width: 36px; height: 36px; margin-left: 4px; }
+  .homework .video-ph .ph-meta {
+    display: flex; justify-content: space-between; align-items: end;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6);
+  }
+  .homework .video-ph .ph-meta strong { color: #fff; font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 0; text-transform: none; display: block; }
+
+  .homework .due-block {
+    background: #fff; color: var(--ink);
+    border: 3px solid var(--ink); border-radius: 24px;
+    padding: 32px;
+    display: flex; flex-direction: column; gap: 8px;
+    box-shadow: 10px 10px 0 var(--ink);
+  }
+  .homework .due-block .due-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); opacity: 0.7; }
+  .homework .due-block .due-day { font-family: var(--font-display); font-weight: 700; font-size: 44px; line-height: 1; letter-spacing: -0.02em; margin-top: 6px; }
+  .homework .due-block .due-time { font-family: var(--font-display); font-weight: 600; font-size: 22px; color: var(--ink-2); }
+
+  /* ── 2. AGENDA / WORKSHOP TOC ──────────────────────── */
+  section.slide.agenda { background: var(--cream); }
+  .agenda .pad { padding-top: 120px; padding-bottom: 140px; }
+  .agenda h2.h-title {
+    /* Compact, single-line variant — table is the hero */
+    font-size: calc(76px * var(--scale-title));
+    line-height: 1;
+    max-width: none;
+  }
+
+  .agenda .header-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 40px;
+    margin-top: 20px;
+  }
+  .agenda .summary {
+    display: flex; gap: 28px;
+    padding: 16px 26px;
+    background: var(--ink); color: #fff;
+    border-radius: 14px;
+    flex-shrink: 0;
+  }
+  .agenda .summary .col { white-space: nowrap; }
+  .agenda .summary .col .k { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .agenda .summary .col .v { font-family: var(--font-display); font-weight: 700; font-size: 22px; margin-top: 4px; letter-spacing: -0.01em; white-space: nowrap; }
+
+  .agenda .table {
+    margin-top: 28px;
+    background: #fff; border: 3px solid var(--ink); border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 10px 10px 0 var(--ink);
+  }
+  .agenda .row {
+    display: grid; grid-template-columns: 60px 100px 1fr auto auto;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 32px;
+    border-bottom: 2px dashed var(--border);
+  }
+  .agenda .row:last-child { border-bottom: none; }
+  .agenda .row .bullet {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 22px;
+    color: var(--ink); line-height: 1;
+  }
+  .agenda .row:nth-child(1) .bullet { background: var(--yellow); }
+  .agenda .row:nth-child(2) .bullet { background: var(--mint); }
+  .agenda .row:nth-child(3) .bullet { background: var(--sky); color: #fff; }
+  .agenda .row:nth-child(4) .bullet { background: var(--plum); color: #fff; }
+  .agenda .row:nth-child(5) .bullet { background: var(--pink); }
+  .agenda .row .thumb {
+    width: 100px; height: 76px; border-radius: 12px;
+    border: 2.5px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
+  }
+  .agenda .row:nth-child(1) .thumb { background: #fff5d6; }
+  .agenda .row:nth-child(2) .thumb { background: #d8f5e4; }
+  .agenda .row:nth-child(3) .thumb { background: #d6ebff; }
+  .agenda .row:nth-child(4) .thumb { background: #ebe1ff; }
+  .agenda .row:nth-child(5) .thumb { background: #ffd6ec; }
+  .agenda .row .thumb svg { width: 32px; height: 32px; opacity: 0.7; }
+  .agenda .row .body h4 { font-family: var(--font-display); font-weight: 700; font-size: calc(28px * var(--scale-title)); margin: 0; letter-spacing: -0.015em; line-height: 1.15; }
+  .agenda .row .body p  { margin: 5px 0 0; font-size: calc(20px * var(--scale-body)); line-height: 1.4; color: var(--ink-2); }
+  .agenda .row .dur {
+    font-family: var(--font-mono); font-weight: 700; font-size: 16px;
+    padding: 8px 14px; background: var(--cream); border: 2px solid var(--ink); border-radius: 999px;
+    white-space: nowrap;
+  }
+  .agenda .row .kind {
+    font-family: var(--font-mono); font-weight: 700; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 8px 16px; border-radius: 6px; white-space: nowrap;
+    color: var(--ink);
+  }
+  .agenda .row:nth-child(1) .kind { background: var(--yellow); }
+  .agenda .row:nth-child(2) .kind { background: var(--mint); }
+  .agenda .row:nth-child(3) .kind { background: var(--sky); color: #fff; }
+  .agenda .row:nth-child(4) .kind { background: var(--plum); color: #fff; }
+  .agenda .row:nth-child(5) .kind { background: var(--pink); }
+
+  /* ── 4. WORKSHOP PAGE ────────────────────────────── */
+  section.slide.workshop { background: #dce7f0; }
+  .workshop .pad { padding-top: 120px; padding-bottom: 110px; }
+
+  .workshop .layout {
+    flex: 1;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+    align-items: stretch;
+    margin-top: 30px;
+  }
+  .workshop .hero-photo {
+    background: #fff; border: 3px solid var(--ink); border-radius: 28px;
+    box-shadow: 14px 14px 0 var(--ink);
+    display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start;
+    gap: 14px;
+    min-height: 440px;
+    padding: 66px 26px 26px; box-sizing: border-box;
+    position: relative; overflow: hidden;
+  }
+  .workshop .hero-photo .hp-icon {
+    width: 148px; height: 148px; border-radius: 50%;
+    background: var(--yellow); border: 3px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .workshop .hero-photo .hp-icon svg { width: 64px; height: 64px; }
+  .workshop .hero-photo .hp-label { font-family: var(--font-display); font-weight: 700; font-size: 30px; color: var(--ink); letter-spacing: -0.01em; }
+  .workshop .hero-photo .hp-hint { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .workshop .hero-photo .ws-tag {
+    position: absolute; top: 24px; left: 24px;
+    background: var(--plum); color: #fff;
+    padding: 6px 14px; border-radius: 6px;
+    font-family: var(--font-mono); font-weight: 700; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    border: 2px solid var(--ink);
+    white-space: nowrap;
+  }
+
+  .workshop .content { display: flex; flex-direction: column; }
+  .workshop .content .lede {
+    font-size: calc(26px * var(--scale-body)); line-height: 1.5; color: var(--ink-2);
+    margin: 20px 0 28px; max-width: 640px;
+  }
+  .workshop .meta-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    margin-bottom: 32px;
+  }
+  .workshop .meta-grid .item {
+    background: #fff; border: 2.5px solid var(--ink); border-radius: 14px;
+    padding: 18px 22px;
+  }
+  .workshop .meta-grid .item .k { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .workshop .meta-grid .item .v { font-family: var(--font-display); font-weight: 700; font-size: calc(24px * var(--scale-title)); margin-top: 4px; letter-spacing: -0.01em; }
+
+  .workshop .materials .m-label {
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .workshop .materials .m-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .workshop .materials .chip {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #fff; border: 2px solid var(--ink); border-radius: 999px;
+    padding: 10px 18px;
+    font-family: var(--font-display); font-weight: 600; font-size: calc(20px * var(--scale-body));
+    white-space: nowrap;
+  }
+  .workshop .materials .chip .d { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ink); }
+
+  .workshop .ref-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin: 22px 0 0;
+  }
+  .workshop .ref {
+    height: 110px;
+    background: #fff; border: 2.5px solid var(--ink); border-radius: 14px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 6px;
+  }
+  .workshop .ref .step { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .workshop .ref .label { font-family: var(--font-display); font-weight: 600; font-size: 16px; }
+
+  /* ── 8. FOR PARENTS ───────────────────────────── */
+  section.slide.parent { background: var(--ink); color: #fff; }
+  .parent .chrome-top, .parent .chrome-bot { color: rgba(255,255,255,0.55); }
+  .parent .chrome-top .brand-logo { background-color: transparent; }
+  .parent .chrome-top .crumb::before { background: var(--yellow); }
+  .parent .eyebrow { color: var(--yellow); }
+  .parent .eyebrow::before { background: var(--yellow); }
+  .parent h2 { color: #fff; }
+  .parent h2 .ac-hl {
+    background-image: linear-gradient(180deg, var(--red) 0, var(--red) 100%);
+    background-size: 100% 0.35em;
+    background-position: 0 0.78em;
+    background-repeat: no-repeat;
+    padding: 0 0.12em; color: #fff;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .parent .pad { padding-top: 140px; padding-bottom: 100px; }
+
+  .parent .layout {
+    flex: 1;
+    display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 56px;
+    margin-top: 36px;
+  }
+
+  .parent .hero-photo {
+    background: rgba(255,255,255,0.04);
+    border: 3px solid rgba(255,255,255,0.25); border-radius: 24px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px;
+    position: relative; overflow: hidden;
+    min-height: 440px;
+  }
+  .parent .hero-photo .hp-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--yellow); border: 3px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .parent .hero-photo .hp-label { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: #fff; }
+  .parent .hero-photo .hp-hint { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.55); white-space: nowrap; }
+  .parent .hero-photo .caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.5);
+    padding: 16px 24px;
+    backdrop-filter: blur(6px);
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.06em; color: rgba(255,255,255,0.95);
+  }
+  .parent .hero-photo .caption strong { color: var(--yellow); font-family: var(--font-display); font-size: 16px; font-weight: 700; letter-spacing: -0.005em; }
+
+  .parent .right { display: flex; flex-direction: column; gap: 24px; }
+
+  .parent .quote {
+    background: rgba(255,255,255,0.06);
+    border-left: 4px solid var(--red);
+    padding: 28px 32px;
+    border-radius: 12px;
+  }
+  .parent .quote p {
+    margin: 0;
+    font-family: var(--font-display); font-weight: 600; font-size: calc(28px * var(--scale-title)); line-height: 1.35;
+    color: #fff; letter-spacing: -0.01em;
+  }
+  .parent .quote .by {
+    margin-top: 14px;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--yellow); font-weight: 700;
+  }
+
+  .parent .skills .skills-label {
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.6); font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .parent .skills .skill-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .parent .skills .skill {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.18);
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-family: var(--font-display); font-weight: 600; font-size: calc(20px * var(--scale-body));
+  }
+  .parent .skills .skill .check {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--mint-d); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .parent .next-up {
+    margin-top: auto;
+    display: flex; align-items: stretch;
+    background: var(--red); color: #fff;
+    border-radius: 16px; overflow: hidden;
+    border: 2px solid var(--red);
+  }
+  .parent .next-up .when {
+    padding: 18px 24px;
+    background: var(--yellow); color: var(--ink);
+    display: flex; flex-direction: column; justify-content: center;
+    min-width: 200px;
+  }
+  .parent .next-up .when .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.65; }
+  .parent .next-up .when .date  { font-family: var(--font-display); font-weight: 700; font-size: 22px; letter-spacing: -0.01em; margin-top: 4px; }
+  .parent .next-up .what {
+    padding: 18px 24px;
+    display: flex; flex-direction: column; justify-content: center;
+    flex: 1;
+  }
+  .parent .next-up .what .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.75); }
+  .parent .next-up .what .topic { font-family: var(--font-display); font-weight: 700; font-size: 20px; margin-top: 4px; }
+
+
+  /* ── Open File Button (เปิดไฟล์ workshop) ──────────── */
+  .file-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    background: var(--ink); color: #fff;
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    font-family: var(--font-mono); font-size: 15px; font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    box-shadow: 5px 5px 0 var(--yellow);
+    margin-top: 28px;
+    transition: transform 150ms, box-shadow 150ms;
+    width: fit-content;
+  }
+  .file-btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--yellow); }
+  .file-btn svg { width: 18px; height: 18px; }
+  .file-btn .arrow { margin-left: 4px; }
+
+  /* HW slide — file links in side panel */
+  .homework .hw-files {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-top: 24px;
+  }
+  .homework .hw-files-label {
+    font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(0,0,0,0.5); margin-bottom: 4px;
+  }
+  .homework .hw-file {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.7); color: var(--ink);
+    border: 2px solid var(--ink); border-radius: 12px;
+    font-family: var(--font-mono); font-size: 14px; font-weight: 500;
+    text-decoration: none;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform 120ms, box-shadow 120ms;
+  }
+  .homework .hw-file:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); background: #fff; }
+  .homework .hw-file .hw-tag {
+    color: #fff; padding: 3px 9px;
+    border-radius: 6px; font-size: 11px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .homework .hw-file .arr { margin-left: auto; font-size: 18px; }
+
+  /* ── Typography polish (2026-06-09): label = IBM Plex Sans Thai + normal letter-spacing (code/filename = mono) ── */
+  .chrome-top .crumb, .chrome-bot, .chrome-bot > span, .eyebrow, .ws-tag,
+  .agenda .row .kind, .agenda .row .dur, .agenda .summary .col .k,
+  .workshop .meta-grid .item .k, .homework .meta-item .k, .workshop .materials .m-label,
+  .workshop .ref .step, .quiz .qno, .cover .meta .label, .recap .chip-strip .label,
+  .workshop .hero-photo .hp-hint, .cover .hero-photo .hp-hint, .homework .due-block .due-label,
+  .homework .hw-files-label, .homework .hw-file, .homework .hw-file .hw-tag,
+  .onboarding .tool-card .newbadge, .onboarding .tool-card .cost, .homework .tag,
+  .screen .bar .t, .diagram-box .caption {
+    letter-spacing: normal !important;
+  }
+  .chrome-top .crumb, .chrome-bot, .chrome-bot > span, .eyebrow, .ws-tag,
+  .agenda .row .kind, .agenda .row .dur, .agenda .summary .col .k,
+  .workshop .meta-grid .item .k, .homework .meta-item .k, .workshop .materials .m-label,
+  .workshop .ref .step, .quiz .qno, .cover .meta .label, .recap .chip-strip .label,
+  .homework .due-block .due-label, .homework .hw-files-label, .homework .hw-file .hw-tag,
+  .onboarding .tool-card .newbadge, .onboarding .tool-card .cost, .homework .tag,
+  .screen .bar .t, .diagram-box .caption {
+    font-family: var(--font-sans) !important;
+  }
+
+  /* ── Output-screen mockup (workshop hero-photo) ───────── */
+  .screen, .screen.gui {
+    width: 100%; flex: 1; min-height: 280px;
+    border: 2.5px solid var(--ink); border-radius: 14px;
+    box-shadow: 6px 6px 0 var(--ink);
+    overflow: hidden; display: flex; flex-direction: column;
+  }
+  .screen { background: #0f172a; }
+  .screen .bar { background: #1e293b; padding: 11px 15px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .screen.gui .bar { background: #e9eef5; }
+  .screen .bar .d { width: 12px; height: 12px; border-radius: 50%; }
+  .screen .bar .d.r { background: #ff5f57; } .screen .bar .d.y { background: #febc2e; } .screen .bar .d.g { background: #28c840; }
+  .screen .bar .t { margin-left: 10px; font-family: var(--font-sans); font-size: 13px; color: #94a3b8; }
+  .screen.gui .bar .t { color: #64748b; }
+  .screen .body { flex: 1; padding: 22px 24px; font-family: var(--font-mono); font-size: 20px; line-height: 1.6; color: #e2e8f0; display: flex; flex-direction: column; gap: 3px; }
+  .screen .body .ln { white-space: pre-wrap; }
+  .screen .body .muted { color: #64748b; } .screen .body .g { color: #5dd49e; } .screen .body .y { color: #ffd43b; } .screen .body .b { color: #5fb3ff; }
+  .screen.gui .gbody { flex: 1; background: #ffd9ec; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
+  .screen.gui .gtxt { font-family: var(--font-sans); font-weight: 700; font-size: 23px; color: #0a0a0b; }
+  .screen.gui .gbtn { background: #3776AB; color: #fff; padding: 13px 32px; border-radius: 10px; border: 2.5px solid #0a0a0b; font-family: var(--font-sans); font-weight: 700; font-size: 19px; box-shadow: 3px 3px 0 #0a0a0b; }
+  .workshop .hero-photo .hp-hint { align-self: center; margin-top: 0; }
+
+  svg.logomark { width: 24px; height: 24px; }
+</style>
+</head>
+<body>
+<script type="application/json" id="speaker-notes">["", "", "", "", "", "", "", "", "", ""]</script>
+<deck-stage width="1920" height="1080">
+
+  <!-- ══════════════════════ 1. COVER · F2 Survival Challenge ══════════════════════ -->
+  <section class="slide cover" data-screen-label="01 Cover" data-label="Cover">
+    <div class="chrome-top">
+      <div class="brand">
+        <div class="brand-logo" aria-label="CodeLab Thailand"><img class="logo-color" src="../../logo/Logo-Horizontal.svg" alt="CodeLab Thailand"/><img class="logo-white" src="../../logo/Logo-Horizontal-white.svg" alt="CodeLab Thailand"/></div>
+      </div>
+      <div class="crumb">Python F2 · Session 06</div>
+    </div>
+
+    <div class="pad">
+      <div class="eyebrow anim-line" style="font-family: &quot;IBM Plex Sans Thai&quot;">F2 Review Day · 120 min · ⛔ NO ChatGPT</div>
+      <h1 class="h-hero anim-rise d1">Survivor<br/>of <span class="ac-y">F2.</span></h1>
+
+      <div class="tag-row anim-rise d3">
+        <span class="tag" style="font-family: &quot;IBM Plex Sans Thai&quot;"><span class="tdot" style="background:var(--yellow)"></span>3 Stages</span>
+        <span class="tag" style="font-family: &quot;IBM Plex Sans Thai&quot;"><span class="tdot" style="background:var(--mint)"></span>1 Boss Battle</span>
+        <span class="tag" style="font-family: &quot;IBM Plex Sans Thai&quot;"><span class="tdot" style="background:var(--pink)"></span>ส่งให้พ่อแม่เล่น</span>
+      </div>
+
+      <div class="meta anim-rise d4">
+        <div><span class="label">Session</span>06 / 12</div>
+        <div><span class="label">Track</span>Python Foundation 2</div>
+        <div><span class="label">Reviewing</span>S1 → S5</div>
+      </div>
+    </div>
+
+    <div class="hero-photo anim-settle d2">
+      <div class="hp-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2.5">
+          <path d="M12 2 L15 9 L22 9 L17 14 L19 22 L12 17 L5 22 L7 14 L2 9 L9 9 Z"/>
+        </svg>
+      </div>
+      <div class="hp-label">Boss Battle</div>
+      <div class="hp-hint">Guess Master · Trinket</div>
+    </div>
+
+    <svg class="star-mark anim-pulse" viewBox="0 0 100 100">
+      <path d="M50 5 L60 38 L95 40 L67 60 L77 95 L50 73 L23 95 L33 60 L5 40 L40 38 Z" fill="#ffd43b" stroke="#0a0a0b" stroke-width="3"/>
+    </svg>
+
+    <div class="chrome-bot" style="font-family: &quot;IBM Plex Sans Thai&quot;; font-size: 18px">
+      <span>codelabthailand.com</span>
+      <span>01 / 10</span>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════ 2. AGENDA · 4 Stages ══════════════════════ -->
+  <section class="slide agenda" data-screen-label="02 Briefing" data-label="Briefing">
+    <div class="chrome-top">
+      <div class="brand">
+        <div class="brand-logo" aria-label="CodeLab Thailand"><img class="logo-color" src="../../logo/Logo-Horizontal.svg" alt="CodeLab Thailand"/><img class="logo-white" src="../../logo/Logo-Horizontal-white.svg" alt="CodeLab Thailand"/></div>
+      </div>
+      <div class="crumb">Briefing · 110 min</div>
+    </div>
+
+    <div class="pad">
+      <div class="header-row">
+        <div>
+          <div class="eyebrow anim-line">วันนี้ทำอะไรบ้าง</div>
+          <h2 class="h-title anim-rise d1" style="max-width: 1100px;">3 Stages + 1 <span class="ac-hl">Boss Battle</span>.</h2>
+        </div>
+        <div class="summary anim-rise d2">
+          <div class="col"><div class="k">Stages</div><div class="v">3</div></div>
+          <div class="col"><div class="k">Boss</div><div class="v">1</div></div>
+          <div class="col"><div class="k">Minutes</div><div class="v">110</div></div>
+          <div class="col"><div class="k">Reward</div><div class="v">Link to share</div></div>
+        </div>
+      </div>
+
+      <div class="table anim-settle d3">
+        <div class="row">
+          <div class="bullet">1</div>
+          <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="#3776AB" stroke-width="2"><path d="M9 17V5l12-2v12"/><circle cx="6" cy="17" r="3"/><circle cx="18" cy="15" r="3"/></svg></div>
+          <div class="body">
+            <h4>Stage 1 · Playlist Mayhem</h4>
+            <p>list ของเพลง — เพิ่ม / ลบ / slice top 5 (ทบทวน append, remove, slicing)</p>
+          </div>
+          <div class="dur">15 min</div>
+          <div class="kind">Lists</div>
+        </div>
+        <div class="row">
+          <div class="bullet">2</div>
+          <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0"/><path d="M3 12l3-3M3 12l3 3"/></svg></div>
+          <div class="body">
+            <h4>Stage 2 · Loop Lab <span style="color:var(--muted); font-size:0.7em;">[Template]</span></h4>
+            <p>5 missions — เลือก for หรือ while ให้ถูก + เติมโค้ดให้ครบ</p>
+          </div>
+          <div class="dur">15 min</div>
+          <div class="kind">Loops</div>
+        </div>
+        <div class="row">
+          <div class="bullet">3</div>
+          <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg></div>
+          <div class="body">
+            <h4>Stage 3 · Combo Strike</h4>
+            <p>list คะแนนสอบ — หาเฉลี่ย + Top 3 + ใครต่ำกว่าค่าเฉลี่ย</p>
+          </div>
+          <div class="dur">15 min</div>
+          <div class="kind">Combo</div>
+        </div>
+        <div class="row">
+          <div class="bullet">👹</div>
+          <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg></div>
+          <div class="body">
+            <h4>Boss Battle · Guess Master</h4>
+            <p>เกมทายเลข 1-100 — สร้างเอง + Deploy Trinket + ส่งให้พ่อแม่ใน LINE</p>
+          </div>
+          <div class="dur">30 min</div>
+          <div class="kind">Boss</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chrome-bot">
+      <span>Briefing · 3 stages + 1 boss</span>
+      <span>02 / 10</span>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════ 3. STAGE 1 · Playlist Mayhem ══════════════════════ -->
+  <section class="slide workshop" data-screen-label="03 Stage 1" data-label="Stage 1">
+    <div class="chrome-top">
+      <div class="brand">
+        <div class="brand-logo" aria-label="CodeLab Thailand"><img class="logo-color" src="../../logo/Logo-Horizontal.svg" alt="CodeLab Thailand"/><img class="logo-white" src="../../logo/Logo-Horizontal-white.svg" alt="CodeLab Thailand"/></div>
+      </div>
+      <div class="crumb">Stage 1 · Lists Review</div>
+    </div>
+
+    <div class="pad">
+      <div class="layout">
+        <div class="hero-photo anim-settle d1">
+          <span class="ws-tag">Stage 01 · 15 min</span>
+          <div class="screen anim-rise d2">
+            <div class="bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">Playlist Mayhem</span></div>
+            <div class="body">
+              <div class="ln muted">&gt;&gt;&gt; Playlist Mayhem</div>
+              <div class="ln">ลบเพลง <span class="y">[sad]</span> ออก...</div>
+              <div class="ln">▶ rock anthem</div>
+              <div class="ln">▶ pump it up</div>
+              <div class="ln g">เหลือ 4 เพลง ✓</div>
+            </div>
+          </div>
+          <div class="hp-hint">template_stage_01_playlist.py</div>
+        </div>
+
+        <div class="content">
+          <div class="eyebrow anim-line">Stage 01 · ทบทวน Lists (S1-S2)</div>
+          <h2 class="h-title anim-rise d1" style="font-size: 88px;">Fix this <span class="ac">playlist</span>.</h2>
+          <p class="lede anim-rise d2">มี playlist 8 เพลง ปนกันมั่ว — เพิ่มเพลงปลุกใจ 3, ลบเพลงที่มี "เศร้า" ออกหมด, แล้ว print Top 5 ออกมา</p>
+
+          <div class="meta-grid anim-rise d3">
+            <div class="item"><div class="k">Time</div><div class="v">15 min</div></div>
+            <div class="item"><div class="k">Format</div><div class="v">คนเดียว</div></div>
+            <div class="item"><div class="k">Pass</div><div class="v">รัน + เปลี่ยน list ถูก</div></div>
+          </div>
+
+          <div class="materials anim-rise d4">
+            <div class="m-label">ใช้</div>
+            <div class="m-chips">
+              <span class="chip"><span class="d" style="background:var(--red)"></span>append()</span>
+              <span class="chip"><span class="d" style="background:var(--yellow)"></span>remove()</span>
+              <span class="chip"><span class="d" style="background:var(--sky)"></span>slicing [:5]</span>
+              <span class="chip"><span class="d" style="background:var(--mint)"></span>in / for loop</span>
+            </div>
+          </div>
+
+          <a class="file-btn anim-rise d5" href="workshops/template_stage_01_playlist.py" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            เปิด template_stage_01_playlist.py
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="ref-strip">
+        <div class="ref anim-rise d2"><div class="step">STEP 01</div><div class="label">เปิด template</div></div>
+        <div class="ref anim-rise d3"><div class="step">STEP 02</div><div class="label">เพิ่ม 3 เพลง</div></div>
+        <div class="ref anim-rise d4"><div class="step">STEP 03</div><div class="label">ลบเพลงเศร้า</div></div>
+        <div class="ref anim-rise d5"><div class="step">STEP 04</div><div class="label">print Top 5</div></div>
+      </div>
+    </div>
+
+    <div class="chrome-bot">
+      <span>Stage 1 · Lists · template_stage_01_playlist.py</span>
+      <span>03 / 10</span>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════ 4. STAGE 2 · Loop Lab ══════════════════════ -->
+  <section class="slide workshop" data-screen-label="04 Stage 2" data-label="Stage 2">
+    <div class="chrome-top">
+      <div class="brand">
+        <div class="brand-logo" aria-label="CodeLab Thailand"><img class="logo-color" src="../../logo/Logo-Horizontal.svg" alt="CodeLab Thailand"/><img class="logo-white" src="../../logo/Logo-Horizontal-white.svg" alt="CodeLab Thailand"/></div>
+      </div>
+      <div class="crumb">Stage 2 · Loop Lab</div>
+    </div>
+
+    <div class="pad">
+      <div class="layout">
+        <div class="hero-photo anim-settle d1">
+          <span class="ws-tag">Stage 02 · 15 min</span>
+          <div class="screen anim-rise d2">
+            <div class="bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">Loop Lab</span></div>
+            <div class="body">
+              <div class="ln muted">&gt;&gt;&gt; Loop Lab</div>
+              <div class="ln">M1 นับ 1..100  <span class="b">(for)</span></div>
+              <div class="ln">M2 ทายจนถูก  <span class="b">(while)</span></div>
+              <div class="ln g">✓ เลือก loop ถูกทุกข้อ</div>
+            </div>
+          </div>
+          <div class="hp-hint">template_stage_02_loop_lab.py</div>
+        </div>
+
+        <div class="content">
+          <div class="eyebrow anim-line">Stage 02 · for vs while (S3-S5)</div>
+          <h2 class="h-title anim-rise d1" style="font-size: 88px;">Pick the <span class="ac">right loop</span>.</h2>
+          <p class="lede anim-rise d2">5 missions — เลือก for หรือ while ให้ถูก + เติมโค้ดให้ครบ + เขียน comment อธิบาย "เลือกเพราะ___"</p>
+
+          <div class="meta-grid anim-rise d3">
+            <div class="item"><div class="k">Time</div><div class="v">15 min</div></div>
+            <div class="item"><div class="k">Missions</div><div class="v">5 อัน</div></div>
+            <div class="item"><div class="k">Pass</div><div class="v">เลือกถูก ≥ 4 / 5</div></div>
+          </div>
+
+          <div class="materials anim-rise d4">
+            <div class="m-label">Missions</div>
+            <div class="m-chips">
+              <span class="chip"><span class="d" style="background:var(--red)"></span>นับ 1-100</span>
+              <span class="chip"><span class="d" style="background:var(--yellow)"></span>ทอยเต๋าจนได้ 6</span>
+              <span class="chip"><span class="d" style="background:var(--sky)"></span>print เลขคี่</span>
+              <span class="chip"><span class="d" style="background:var(--mint)"></span>ถามรหัสจนถูก</span>
+              <span class="chip"><span class="d" style="background:var(--plum)"></span>รวม 5 คะแนน</span>
+            </div>
+          </div>
+
+          <a class="file-btn anim-rise d5" href="workshops/template_stage_02_loop_lab.py" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            เปิด template_stage_02_loop_lab.py
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="ref-strip">
+        <div class="ref anim-rise d2"><div class="step">RULE</div><div class="label">for = รู้จำนวนรอบ</div></div>
+        <div class="ref anim-rise d3"><div class="step">RULE</div><div class="label">while = until condition</div></div>
+        <div class="ref anim-rise d4"><div class="step">HINT</div><div class="label">comment บอกเหตุผล</div></div>
+        <div class="ref anim-rise d5"><div class="step">RESULT</div><div class="label">5 / 5 = perfect</div></div>
+      </div>
+    </div>
+
+    <div class="chrome-bot">
+      <span>Stage 2 · Loops · template_stage_02_loop_lab.py</span>
+      <span>04 / 10</span>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════ 5. STAGE 3 · Combo Strike ══════════════════════ -->
+  <section class="slide workshop" data-screen-label="05 Stage 3" data-label="Stage 3">
+    <div class="chrome-top">
+      <div class="brand">
+        <div class="brand-logo" aria-label="CodeLab Thailand"><img class="logo-color" src="../../logo/Logo-Horizontal.svg" alt="CodeLab Thailand"/><img class="logo-white" src="../../logo/Logo-Horizontal-white.svg" alt="CodeLab Thailand"/></div>
+      </div>
+      <div class="crumb">Stage 3 · Combo Strike</div>
+    </div>
+
+    <div class="pad">
+      <div class="layout">
+        <div class="hero-photo anim-settle d1">
+          <span class="ws-tag">Stage 03 · 15 min</span>
+          <div class="screen anim-rise d2">
+            <div class="bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">Combo Strike</span></div>
+            <div class="body">
+              <div class="ln muted">&gt;&gt;&gt; Combo Strike</div>
+              <div class="ln">Prim -> 95  <span class="y">★ สูงสุด</span></div>
+              <div class="ln">Ohm  -> 55  ต่ำสุด</div>
+              <div class="ln g">เฉลี่ย = 76.5</div>
+            </div>
+          </div>
+          <div class="hp-hint">template_stage_03_combo.py</div>
+        </div>
+
+        <div class="content">
+          <div class="eyebrow anim-line">Stage 03 · List + Loop รวม</div>
+          <h2 class="h-title anim-rise d1" style="font-size: 88px;">Score <span class="ac">analytics</span>.</h2>
+          <p class="lede anim-rise d2">list คะแนนสอบ 10 คน — หาค่าเฉลี่ย + Top 3 + นับใครต่ำกว่าค่าเฉลี่ย ใน 4 บรรทัด output</p>
+
+          <div class="meta-grid anim-rise d3">
+            <div class="item"><div class="k">Time</div><div class="v">15 min</div></div>
+            <div class="item"><div class="k">Output</div><div class="v">4 บรรทัด</div></div>
+            <div class="item"><div class="k">Pass</div><div class="v">ตัวเลขถูก 4 / 4</div></div>
+          </div>
+
+          <div class="materials anim-rise d4">
+            <div class="m-label">รวม concept</div>
+            <div class="m-chips">
+              <span class="chip"><span class="d" style="background:var(--red)"></span>list</span>
+              <span class="chip"><span class="d" style="background:var(--yellow)"></span>for loop</span>
+              <span class="chip"><span class="d" style="background:var(--sky)"></span>accumulator</span>
+              <span class="chip"><span class="d" style="background:var(--mint)"></span>if + tracker</span>
+              <span class="chip"><span class="d" style="background:var(--plum)"></span>slicing</span>
+            </div>
+          </div>
+
+          <a class="file-btn anim-rise d5" href="workshops/template_stage_03_combo.py" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            เปิด template_stage_03_combo.py
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="ref-strip">
+        <div class="ref anim-rise d2"><div class="step">TASK 1</div><div class="label">ค่าเฉลี่ย</div></div>
+        <div class="ref anim-rise d3"><div class="step">TASK 2</div><div class="label">คะแนนสูงสุด</div></div>
+        <div class="ref anim-rise d4"><div class="step">TASK 3</div><div class="label">Top 3</div></div>
+        <div class="ref anim-rise d5"><div class="step">TASK 4</div><div class="label">นับต่ำกว่าเฉลี่ย</div></div>
+      </div>
+    </div>
+
+    <div class="chrome-bot">
+      <span>Stage 3 · Combo · template_stage_03_combo.py</span>
+      <span>05 / 10</span>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════ 6. BOSS BATTLE ══════════════════════ -->
+  <section class="slide workshop" data-screen-label="06 Boss" data-label="Boss Battle" style="background: #dce7f0;">
+    <div class="chrome-top">
+      <div class="brand">
+        <div class="brand-logo" aria-label="CodeLab Thailand"><img class="logo-color" src="../../logo/Logo-Horizontal.svg" alt="CodeLab Thailand"/><img class="logo-white" src="../../logo/Logo-Horizontal-white.svg" alt="CodeLab Thailand"/></div>
+      </div>
+      <div class="crumb">👹 BOSS BATTLE · ⛔ NO AI</div>
+    </div>
+
+    <div class="pad">
+      <div class="layout">
+        <div class="hero-photo anim-settle d1">
+          <span class="ws-tag" style="background: var(--red); color: #fff;">BOSS · 30 min</span>
+          <div class="screen anim-rise d2">
+            <div class="bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">Guess Master</span></div>
+            <div class="body">
+              <div class="ln muted">&gt;&gt;&gt; Guess Master</div>
+              <div class="ln">ทาย 1-100: 50  <span class="b">⬇</span></div>
+              <div class="ln">ทาย: 25  <span class="b">⬆</span></div>
+              <div class="ln g">🎉 ถูก! 37 (4 ครั้ง)</div>
+            </div>
+          </div>
+          <div class="hp-hint">boss_guess_master.py</div>
+        </div>
+
+        <div class="content">
+          <div class="eyebrow anim-line">Boss Battle · 30 นาที</div>
+          <h2 class="h-title anim-rise d1" style="font-size: 88px;">สร้างเกม<br/><span class="ac">ทายเลข</span> ที่พ่อแม่เล่นได้.</h2>
+          <p class="lede anim-rise d2">คอมสุ่ม 1-100 → ผู้เล่นทาย → คอมบอก "สูงไป/ต่ำไป" → นับครั้ง → Deploy ลง Trinket → แชร์ให้คนสำคัญใน LINE</p>
+
+          <div class="meta-grid anim-rise d3">
+            <div class="item"><div class="k">Time</div><div class="v">30 min</div></div>
+            <div class="item"><div class="k">AI</div><div class="v" style="color: var(--red);">⛔ ห้าม</div></div>
+            <div class="item"><div class="k">Deploy</div><div class="v">Trinket</div></div>
+          </div>
+
+          <div class="materials anim-rise d4">
+            <div class="m-label">Phases (5 นาที x 5)</div>
+            <div class="m-chips">
+              <span class="chip"><span class="d" style="background:var(--red)"></span>1. Setup</span>
+              <span class="chip"><span class="d" style="background:var(--yellow)"></span>2. While + input</span>
+              <span class="chip"><span class="d" style="background:var(--mint)"></span>3. นับครั้ง</span>
+              <span class="chip"><span class="d" style="background:var(--sky)"></span>4. Difficulty</span>
+              <span class="chip"><span class="d" style="background:var(--plum)"></span>5. Share คนสำคัญ</span>
+            </div>
+          </div>
+
+          <a class="file-btn anim-rise d5" href="workshops/boss_guess_master.py" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            เปิด boss_guess_master.py
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="ref-strip">
+        <div class="ref anim-rise d2"><div class="step">RULE</div><div class="label">ทำคนเดียว</div></div>
+        <div class="ref anim-rise d3"><div class="step">RULE</div><div class="label">ห้ามดูจอเพื่อน</div></div>
+        <div class="ref anim-rise d4"><div class="step">RULE</div><div class="label">⛔ ChatGPT</div></div>
+        <div class="ref anim-rise d5"><div class="step">REWARD</div><div class="label">🏆 Survivor F2</div></div>
+      </div>
+    </div>
+
+    <div class="chrome-bot">
+      <span>Boss Battle · Guess Master · แชร์ Trinket ให้คนสำคัญ</span>
+      <span>06 / 10</span>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════ 7. QUIZ · Quick Check ══════════════════════ -->
+  <section class="slide quiz" data-screen-label="07 Quiz" data-label="Quiz">
+    <div class="chrome-top">
+      <div class="brand">
+        <div class="brand-logo" aria-label="CodeLab Thailand"><img class="logo-color" src="../../logo/Logo-Horizontal.svg" alt="CodeLab Thailand"/><img class="logo-white" src="../../logo/Logo-Horizontal-white.svg" alt="CodeLab Thailand"/></div>
+      </div>
+      <div class="crumb">Quick check · เฉลย: B</div>
+    </div>
+
+    <div class="pad" style="padding-top: 200px;">
+      <div class="qno">
+        <span>Question 01</span>
+        <span class="of">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+        </span>
+      </div>
+      <h2 class="question anim-rise d1">เกมทายเลข ควรใช้ loop ไหน — และ <span style="color: var(--yellow)">ทำไม</span>?</h2>
+
+      <div class="options" id="q1-options">
+        <div class="opt anim-rise d2" data-correct="false" onclick="pickAnswer(this)">
+          <div class="letter">A</div>
+          <div class="text">for + range(10) — กำหนดให้ทาย 10 ครั้ง</div>
+        </div>
+        <div class="opt anim-rise d3" data-correct="true" onclick="pickAnswer(this)">
+          <div class="letter">B</div>
+          <div class="text">while — ทายจนกว่าจะถูก (ไม่รู้กี่ครั้ง)</div>
+        </div>
+        <div class="opt anim-rise d4" data-correct="false" onclick="pickAnswer(this)">
+          <div class="letter">C</div>
+          <div class="text">ไม่ใช้ loop ก็ได้ — แค่ใช้ if</div>
+        </div>
+        <div class="opt anim-rise d5" data-correct="false" onclick="pickAnswer(this)">
+          <div class="letter">D</div>
+          <div class="text">ใช้ทั้ง for + while พร้อมกัน</div>
+        </div>
+      </div>
+
+      <div class="timer anim-pulse">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <span>30s</span>
+      </div>
+    </div>
+
+    <div class="chrome-bot">
+      <span>Quick check · เลือก loop ที่ใช่</span>
+      <span>07 / 10</span>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════ 8. RECAP ══════════════════════ -->
+  <section class="slide recap" data-screen-label="08 Recap" data-label="Recap">
+    <div class="chrome-top">
+      <div class="brand">
+        <div class="brand-logo" aria-label="CodeLab Thailand"><img class="logo-color" src="../../logo/Logo-Horizontal.svg" alt="CodeLab Thailand"/><img class="logo-white" src="../../logo/Logo-Horizontal-white.svg" alt="CodeLab Thailand"/></div>
+      </div>
+      <div class="crumb">Recap · 3 ทักษะ</div>
+    </div>
+
+    <div class="pad" style="padding-top: 150px;">
+      <div class="eyebrow anim-line">วันนี้ทุกคนพิสูจน์ตัวเองแล้ว</div>
+      <h2 class="h-title anim-rise d1" style="max-width: 1500px;"><span class="ac-hl">Survivor of F2</span> — ทำได้ครบ 3 อย่าง.</h2>
+
+      <div class="big-list">
+        <div class="item anim-settle d2">
+          <div class="num">1</div>
+          <div class="head">ใช้ Lists ได้คล่อง</div>
+          <div class="sub">append, remove, slicing — แก้ list ในมือได้แบบไม่ต้องคิดนาน</div>
+        </div>
+        <div class="item anim-settle d3">
+          <div class="num">2</div>
+          <div class="head">เลือก Loop ได้ถูก</div>
+          <div class="sub">for = รู้จำนวนรอบ · while = until condition · เลือกเป็น = แก้ปัญหาเป็น</div>
+        </div>
+        <div class="item anim-settle d4">
+          <div class="num">3</div>
+          <div class="head">สร้างเกมที่พ่อแม่เล่นได้</div>
+          <div class="sub">Guess Master เป็นเกมจริงที่อยู่บน Trinket — มี link ส่งให้พ่อแม่ได้แล้ว!</div>
+        </div>
+      </div>
+
+      <div class="chip-strip anim-rise d5">
+        <span class="label">Next session</span>
+        <span class="chip"><span class="b" style="background:var(--red)"></span>S7: Functions</span>
+        <span class="chip"><span class="b" style="background:var(--yellow)"></span>Loop Control (break/continue)</span>
+        <span class="chip"><span class="b" style="background:var(--mint)"></span>"เขียนซ้ำจนเหนื่อย!"</span>
+      </div>
+    </div>
+
+    <div class="chrome-bot">
+      <span>Recap · พร้อมลุย S7</span>
+      <span>08 / 10</span>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════ 9. HOMEWORK ══════════════════════ -->
+  <section class="slide homework" data-screen-label="09 Homework" data-label="Homework">
+    <div class="chrome-top">
+      <div class="brand">
+        <div class="brand-logo" aria-label="CodeLab Thailand"><img class="logo-color" src="../../logo/Logo-Horizontal.svg" alt="CodeLab Thailand"/><img class="logo-white" src="../../logo/Logo-Horizontal-white.svg" alt="CodeLab Thailand"/></div>
+      </div>
+      <div class="crumb">Take-home · HW 1-3</div>
+    </div>
+
+    <div class="pad" style="padding-top: 150px;">
+      <div class="eyebrow anim-line">การบ้าน 3 ระดับ</div>
+      <h2 class="h-title anim-rise d1">Homework.</h2>
+
+      <div class="layout">
+        <div class="card anim-settle d2">
+          <span class="tag">⏰ ก่อนเริ่ม S7</span>
+          <div class="task">HW1: <span class="ac-hl">ทำด่านที่ไม่ทันให้เสร็จ</span></div>
+          <p class="task-sub">เลือก 1 stage (Playlist / Loop Lab / Combo) ที่ไม่ทันในคาบ → ทำต่อ + comment ทุกบรรทัด</p>
+
+          <div class="meta-grid">
+            <div class="meta-item"><div class="k">HW2 (เก่ง)</div><div class="v">Boss V2 + Score</div></div>
+            <div class="meta-item"><div class="k">HW3</div><div class="v">แชร์ Trinket ให้คนสำคัญ</div></div>
+            <div class="meta-item"><div class="k">Time</div><div class="v">~20-50 นาที</div></div>
+            <div class="meta-item"><div class="k">Submit</div><div class="v">LINE class group</div></div>
+          </div>
+        </div>
+
+        <div class="side">
+          <div class="due-block anim-settle d3">
+            <span class="due-label">Due</span>
+            <span class="due-day">ก่อน S7</span>
+            <span class="due-time">7 วันข้างหน้า</span>
+          </div>
+
+          <div class="hw-files anim-settle d4">
+            <div class="hw-files-label">เปิดไฟล์ HW</div>
+            <a class="hw-file" href="workshops/hw1_finish_stage.py" target="_blank" rel="noopener">
+              <span class="hw-tag" style="background:var(--red)">HW1</span>
+              <span>hw1_finish_stage.py</span>
+              <span class="arr">→</span>
+            </a>
+            <a class="hw-file" href="workshops/hw2_boss_v2_score.py" target="_blank" rel="noopener">
+              <span class="hw-tag" style="background:var(--yellow-d); color:var(--ink)">HW2</span>
+              <span>hw2_boss_v2_score.py</span>
+              <span class="arr">→</span>
+            </a>
+            <a class="hw-file" href="workshops/hw3_share_someone.md" target="_blank" rel="noopener">
+              <span class="hw-tag" style="background:var(--ink)">HW3 🏠</span>
+              <span>hw3_share_parent.md</span>
+              <span class="arr">→</span>
+            </a>
+            <a class="hw-file" href="workshops/README.md" target="_blank" rel="noopener" style="background:rgba(255,201,74,0.5);">
+              <span class="hw-tag" style="background:var(--ink)">📖</span>
+              <span>README</span>
+              <span class="arr">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chrome-bot">
+      <span>Homework · 3 tiers · HW1 บังคับ · HW3 = แชร์คนสำคัญ</span>
+      <span>09 / 10</span>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════ 10. PARENT REMINDER ══════════════════════ -->
+  <section class="slide parent" data-screen-label="10 For Parents" data-label="For Parents">
+    <div class="chrome-top">
+      <div class="brand">
+        <div class="brand-logo" aria-label="CodeLab Thailand"><img class="logo-color" src="../../logo/Logo-Horizontal.svg" alt="CodeLab Thailand"/><img class="logo-white" src="../../logo/Logo-Horizontal-white.svg" alt="CodeLab Thailand"/></div>
+      </div>
+      <div class="crumb">Share Time · Boss Battle ใน LINE</div>
+    </div>
+
+    <div class="pad">
+      <div class="eyebrow anim-line">5 นาทีสุดท้าย · ครูรอจนทุกคนส่ง</div>
+      <h2 class="h-title anim-rise d1"><span class="ac-hl">แชร์ให้คนสำคัญ</span> มาลองเล่น.</h2>
+
+      <div class="layout">
+        <div class="hero-photo anim-settle d2">
+          <div class="hp-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2.5">
+              <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+            </svg>
+          </div>
+          <div class="hp-label">LINE · คนสำคัญ</div>
+          <div class="hp-hint">Boss Battle link</div>
+          <div class="caption">
+            <strong>4 steps ก่อนปิดประตู</strong>
+            Trinket → Share → Copy link → ส่ง LINE คนสำคัญ
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="quote anim-rise d2">
+            <p style="font-family: &quot;IBM Plex Sans Thai&quot;; font-size: 32px">"คาบนี้ผ่าน F2 Survival Challenge! อยากให้ลองเล่นเกมทายเลขที่สร้างเองครับ/ค่ะ"</p>
+            <div class="by">— ข้อความที่ส่งให้คนสำคัญ (แม่/พ่อ/เพื่อน/พี่)</div>
+          </div>
+
+          <div class="skills anim-rise d3">
+            <div class="skills-label">4 STEPS</div>
+            <div class="skill-grid">
+              <div class="skill"><div class="check">1</div>เปิด Trinket → กด Share</div>
+              <div class="skill"><div class="check">2</div>Copy link</div>
+              <div class="skill"><div class="check">3</div>เปิด LINE คนสำคัญ</div>
+              <div class="skill"><div class="check">4</div>Paste + พิมพ์ข้อความ</div>
+            </div>
+          </div>
+
+          <div class="next-up anim-rise d4">
+            <div class="when">
+              <span class="label">ครูเช็ค</span>
+              <span class="date">ก่อนปิดประตู</span>
+            </div>
+            <div class="what">
+              <span class="label">หลักฐาน</span>
+              <span class="topic">Screenshot แชทพ่อแม่ → โชว์ครูคาบหน้า</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chrome-bot">
+      <span>Share time · ส่งใน LINE คนสำคัญ ภายในคาบ</span>
+      <span>10 / 10</span>
+    </div>
+  </section>
+
+</deck-stage>
+
+<!-- ─────────── TWEAKS PANEL ─────────── -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<div id="tweaks-root"></div>
+
+<script type="text/babel">
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "bodyFont": "IBM Plex Sans Thai",
+    "titleFont": "Space Grotesk",
+    "bodyScale": 1,
+    "titleScale": 1,
+    "accent": "#3776AB"
+  }/*EDITMODE-END*/;
+
+  const FONT_STACKS = {
+    "IBM Plex Sans Thai": '"IBM Plex Sans Thai", "Inter", system-ui, sans-serif',
+    "Inter":              '"Inter", "IBM Plex Sans Thai", system-ui, sans-serif',
+    "Space Grotesk":      '"Space Grotesk", "IBM Plex Sans Thai", system-ui, sans-serif',
+  };
+
+  function TweaksApp() {
+    const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+    React.useEffect(() => {
+      const root = document.documentElement;
+      root.style.setProperty('--font-sans',    FONT_STACKS[t.bodyFont]  || FONT_STACKS["IBM Plex Sans Thai"]);
+      root.style.setProperty('--font-display', FONT_STACKS[t.titleFont] || FONT_STACKS["Space Grotesk"]);
+      root.style.setProperty('--scale-body',  t.bodyScale);
+      root.style.setProperty('--scale-title', t.titleScale);
+      root.style.setProperty('--red', t.accent);
+    }, [t]);
+
+    return (
+      <TweaksPanel>
+        <TweakSection label="Typography" />
+        <TweakRadio  label="เนื้อหา · Body font" value={t.bodyFont}
+                     options={['IBM Plex Sans Thai', 'Inter']}
+                     onChange={(v) => setTweak('bodyFont', v)} />
+        <TweakRadio  label="หัวข้อ · Display font" value={t.titleFont}
+                     options={['Space Grotesk', 'IBM Plex Sans Thai']}
+                     onChange={(v) => setTweak('titleFont', v)} />
+        <TweakSlider label="เนื้อหา · Body size"  value={t.bodyScale}
+                     min={0.85} max={1.35} step={0.05} unit="×"
+                     onChange={(v) => setTweak('bodyScale', v)} />
+        <TweakSlider label="หัวข้อ · Title size" value={t.titleScale}
+                     min={0.85} max={1.20} step={0.05} unit="×"
+                     onChange={(v) => setTweak('titleScale', v)} />
+
+        <TweakSection label="Color" />
+        <TweakColor  label="Accent" value={t.accent}
+                     options={['#3776AB', '#16a34a', '#6d28d9', '#2563eb', '#db2777']}
+                     onChange={(v) => setTweak('accent', v)} />
+      </TweaksPanel>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TweaksApp />);
+</script>
+
+
+<script>
+  // Quiz interactivity: click an option → show correct/wrong
+  function pickAnswer(elem) {
+    const opts = elem.parentElement.querySelectorAll('.opt');
+    // Reset all
+    opts.forEach(o => o.classList.remove('correct', 'wrong'));
+    // Mark this one
+    const isCorrect = elem.dataset.correct === 'true';
+    if (isCorrect) {
+      elem.classList.add('correct');
+    } else {
+      elem.classList.add('wrong');
+      // Also reveal the correct one
+      opts.forEach(o => {
+        if (o.dataset.correct === 'true') o.classList.add('correct');
+      });
+    }
+  }
+</script>
+
+</body>
+</html>

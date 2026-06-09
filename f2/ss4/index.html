@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CodeLab · F2 Session 4 — Loops + Lists</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+</head>
+<body>
+
+<div class="nav-hint">← → or SPACE to navigate</div>
+<button class="nav-btn prev" onclick="prev()">◀</button>
+<button class="nav-btn next" onclick="next()">▶</button>
+<div class="nav-counter"><strong id="cur">1</strong> / <span id="total">19</span></div>
+
+<a href="../ss3/index.html" class="session-nav prev-session">
+  <span class="session-arrow">◀</span>
+  <span class="session-label">
+    <span class="session-hint">Previous</span>
+    <span class="session-name">For Loops Deep</span>
+  </span>
+</a>
+<span class="session-nav next-session disabled">
+  <span class="session-label">
+    <span class="session-hint">Next session</span>
+    <span class="session-name">— coming soon —</span>
+  </span>
+  <span class="session-arrow">▶</span>
+</span>
+
+<div class="deck">
+
+<!-- ══ 1. COVER ══ -->
+<section class="slide cover cover-python">
+  <div class="sun"></div>
+  <div class="halftone"></div>
+  <div class="python-mark">
+    <img src="../../logo/python-logo.svg" alt="Python">
+  </div>
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill">Python Foundation 2</span></div>
+  </div>
+  <div class="pad" style="padding-top: 180px;">
+    <div class="eyebrow">Session 04 · Level 2 · The Data Master</div>
+    <h1 class="h-hero" style="max-width: 1300px;">Loops meet<br><span class="ac-y">Lists.</span></h1>
+    <div class="tag-row">
+      <span class="tag">🔁 for item in list</span>
+      <span class="tag">🔢 enumerate()</span>
+      <span class="tag">📊 max/min/sum</span>
+      <span class="tag">⏱ 90 min</span>
+    </div>
+    <div class="meta">
+      <div><span class="label">Level</span>Foundation 2</div>
+      <div><span class="label">Session</span>04 / 12</div>
+    </div>
+  </div>
+  <div class="big-num">04</div>
+  <div class="chrome-bot">
+    <span>codelabthailand.com</span>
+    <span>Session 04 / 12</span>
+  </div>
+</section>
+
+<!-- ══ 2. RECAP S3 ══ -->
+<section class="slide recap">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Recap · Session 3</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🔁 Previously on Session 3</div>
+    <h2 class="h-title" style="max-width: 1600px;">We mastered<br><span class="ac">For Loops.</span></h2>
+    <div class="chips">
+      <span class="chip"><span class="bullet" style="background:var(--red)"></span>range(start, stop, step)</span>
+      <span class="chip"><span class="bullet" style="background:var(--yellow)"></span>step = -1 (backward)</span>
+      <span class="chip"><span class="bullet" style="background:var(--mint)"></span>total = total + n</span>
+      <span class="chip"><span class="bullet" style="background:var(--sky)"></span>Birthday Budget</span>
+    </div>
+    <div class="big-list">
+      <div class="item">
+        <div class="num">01</div>
+        <div class="text">range() with 3 args — start, stop, step<span>countdown, even numbers, jumps</span></div>
+      </div>
+      <div class="item">
+        <div class="num">02</div>
+        <div class="text">Accumulator — total = total + n<span>sum up values inside the loop</span></div>
+      </div>
+      <div class="item">
+        <div class="num">03</div>
+        <div class="text">Real apps — budget calculator<span>combined loops + math + if-else</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Previous session</span>
+    <span>02 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 3. OBJECTIVES ══ -->
+<section class="slide objectives">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Today's goals</div>
+  </div>
+  <div class="pad" style="padding-top: 150px;">
+    <div class="eyebrow">What you'll learn today</div>
+    <h2 class="h-title" style="max-width: 1500px;">By the end of class,<br>you'll <span class="ac">do three things.</span></h2>
+    <div class="grid">
+      <div class="obj-card c1">
+        <div class="num">1</div>
+        <div class="icon">🔁</div>
+        <h3>Loop a list</h3>
+        <p>Walk through every item with <code style="background:#ffe1dd;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:18px">for item in list</code> — no index needed.</p>
+      </div>
+      <div class="obj-card c2">
+        <div class="num">2</div>
+        <div class="icon">🔢</div>
+        <h3>Use enumerate()</h3>
+        <p>Get <strong>both</strong> the index AND the value at the same time — the cleanest way.</p>
+      </div>
+      <div class="obj-card c3">
+        <div class="num">3</div>
+        <div class="icon">📊</div>
+        <h3>Find max / min / sum</h3>
+        <p>Use loop + accumulator to find the biggest, smallest, or total in a list.</p>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>3 learning objectives</span>
+    <span>03 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 4. AGENDA ══ -->
+<section class="slide steps">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Today's flow</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🎯 5 things we'll do today</div>
+    <h2 class="h-title" style="max-width: 1600px;">Let's <span class="ac">go!</span></h2>
+    <div class="grid">
+      <div class="step">
+        <div class="n">1</div>
+        <h4>Roll Call 📋</h4>
+        <p>Loop a list of <br>10 friend names</p>
+        <span class="meta-pill red">Workshop · 10 min</span>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h4>Test Scores 📊</h4>
+        <p>Find max + sum<br>of 5 subjects</p>
+        <span class="meta-pill red">Workshop · 15 min</span>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h4>Coin Hunt 🪙</h4>
+        <p>Sum coin values<br>+ find the biggest</p>
+        <span class="meta-pill yellow">Mini · 15 min</span>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <h4>Snack Budget 🍿</h4>
+        <p>1 week of snack money<br>→ stats + insights</p>
+        <span class="meta-pill">🎯 Project · 25 min</span>
+      </div>
+      <div class="step">
+        <div class="n">5</div>
+        <h4>Homework 📚</h4>
+        <p>3 levels — <br>scores · 7-11 · grades</p>
+        <span class="meta-pill">Take-home</span>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>5 activities today</span>
+    <span>04 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 5. SECTION 1 — for item in list ══ -->
+<section class="slide section-divider">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Part 1 of 3</div>
+  </div>
+  <div class="num">01</div>
+  <div class="pad" style="padding-top: 520px;">
+    <div class="eyebrow">PART ONE · for item in list</div>
+    <h2 class="h-title" style="max-width: 1400px;">Walk every<br>item, <span class="ac">in order.</span></h2>
+    <p style="font-family:var(--font-mono);font-size:32px;color:rgba(255,255,255,0.6);margin-top:24px">no index · no range · just walk</p>
+    <div class="progress">
+      <div class="dot now"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Section 01 · for item in list</span>
+    <span>05 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 6. CONCEPT — for item in list ══ -->
+<section class="slide concept">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">List iteration</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🔁 Two ways to walk a list</div>
+    <h2 class="h-big" style="max-width: 1600px;">One is <span class="ac">cleaner.</span></h2>
+    <div class="split">
+      <div class="points">
+        <div class="point">
+          <div class="bullet">❌</div>
+          <div>
+            <h4>The hard way (with index)</h4>
+            <p><code style="background:#ffe1dd;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">for i in range(len(list)):</code><br>then <code style="background:#ffe1dd;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">list[i]</code> every time. Tiring!</p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">✅</div>
+          <div>
+            <h4>The Python way</h4>
+            <p><code style="background:#dcf0e4;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">for item in list:</code><br>Python hands you each item directly!</p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">💡</div>
+          <div>
+            <h4>Item is a temp variable</h4>
+            <p>Name it anything: <code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">for friend in friends</code> reads naturally.</p>
+          </div>
+        </div>
+      </div>
+      <div class="diagram-box">
+        <div style="display:flex;flex-direction:column;gap:14px;width:100%;font-family:var(--font-mono)">
+          <div style="font-family:var(--font-display);font-size:20px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;text-align:center;margin-bottom:6px">friends = ["Alex", "Bob", "Cat"]</div>
+          <div style="display:flex;align-items:center;gap:14px;background:#dcf0e4;padding:14px 18px;border-radius:12px;border:2px solid var(--ink)">
+            <div style="background:#0b6b3a;color:#fff;padding:4px 10px;border-radius:6px;font-size:13px;font-weight:700">Round 1</div>
+            <div style="font-size:18px">friend = <strong>"Alex"</strong></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;background:#dcf0e4;padding:14px 18px;border-radius:12px;border:2px solid var(--ink)">
+            <div style="background:#0b6b3a;color:#fff;padding:4px 10px;border-radius:6px;font-size:13px;font-weight:700">Round 2</div>
+            <div style="font-size:18px">friend = <strong>"Bob"</strong></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;background:#dcf0e4;padding:14px 18px;border-radius:12px;border:2px solid var(--ink)">
+            <div style="background:#0b6b3a;color:#fff;padding:4px 10px;border-radius:6px;font-size:13px;font-weight:700">Round 3</div>
+            <div style="font-size:18px">friend = <strong>"Cat"</strong></div>
+          </div>
+          <div style="text-align:center;margin-top:8px;font-family:var(--font-display);font-weight:600;color:var(--py-blue);font-size:22px">Done! No counting needed 🎉</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>for item in list — clean &amp; pythonic</span>
+    <span>06 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 7. CODE — for item in list ══ -->
+<section class="slide code-slide">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Code · iteration</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Live code · Try it!</div>
+    <h2 class="h-big" style="max-width: 1400px;">Walk a list<br>like a <span class="ac">pro.</span></h2>
+    <div class="code-shell">
+      <div class="bar">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="file">friends.py</div>
+      </div>
+<pre><span class="tk-var">friends</span> = [<span class="tk-str">"Alex"</span>, <span class="tk-str">"Bob"</span>, <span class="tk-str">"Cat"</span>, <span class="tk-str">"Dan"</span>]
+
+<span class="tk-cm"># ✅ The Python way</span>
+<span class="tk-kw">for</span> <span class="tk-var">friend</span> <span class="tk-kw">in</span> <span class="tk-var">friends</span>:
+    <span class="tk-fn">print</span>(<span class="tk-fn">f</span><span class="tk-str">"Hi {friend}!"</span>)
+
+<span class="tk-cm"># Output:</span>
+<span class="tk-cm"># Hi Alex!</span>
+<span class="tk-cm"># Hi Bob!</span>
+<span class="tk-cm"># Hi Cat!</span>
+<span class="tk-cm"># Hi Dan!</span>
+</pre>
+    </div>
+    <div class="code-callout">
+      <span class="pill">💡 Tip</span>
+      <span>Variable name is <strong>your choice</strong> — use a singular word that describes one item.</span>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>for item in list</span>
+    <span>07 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 8. WORKSHOP 1 — Roll Call ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill">Workshop 1</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Hands-on · Workshop 1</div>
+    <h2 class="h-title" style="max-width: 1400px;">Roll <span class="ac">Call.</span> 📋</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">Loop through a list of <strong>10 friend names</strong> → greet each one</p>
+        <p class="body" style="margin-top:14px">Use <code style="background:var(--yellow);padding:4px 12px;border-radius:8px;font-family:var(--font-mono);font-size:22px">for friend in friends:</code></p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>List of 10 names</div>
+          <div class="check"><div class="box"></div>Loop with for item in list</div>
+          <div class="check"><div class="box"></div>f-string greeting per name</div>
+        </div>
+        <a href="workshops/workshop_01_roll_call.py" class="file-btn">📄 workshop_01_roll_call.py</a>
+      </div>
+      <div class="illust">📋</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">10 min</div></div></div>
+      <div class="info"><div class="ico">👥</div><div><div class="label">Format</div><div class="value">Solo</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">for item in list</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Workshop 1 · Roll Call</span>
+    <span>08 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 9. QUIZ 1 — for item in list ══ -->
+<section class="slide quiz">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:var(--yellow);color:var(--ink)">Quick Quiz</span></div>
+  </div>
+  <div class="pad" style="padding-top: 130px;">
+    <div class="eyebrow">⚡ Quick Quiz · List iteration</div>
+    <h2 class="question">What does this <span class="ac-y">print?</span></h2>
+    <div class="q-code"><span style="color:#9cb4ff">colors</span> = [<span style="color:#7ed4a5">"red"</span>, <span style="color:#7ed4a5">"blue"</span>, <span style="color:#7ed4a5">"green"</span>]
+<span style="color:#ff7a85">for</span> <span style="color:#9cb4ff">c</span> <span style="color:#ff7a85">in</span> <span style="color:#9cb4ff">colors</span>:
+    <span style="color:#ffd479">print</span>(<span style="color:#9cb4ff">c</span>)</div>
+    <div class="options">
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">A</div>
+        <div class="text code-text">colors</div>
+      </div>
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">B</div>
+        <div class="text code-text">0, 1, 2</div>
+      </div>
+      <div class="opt" data-correct="true" onclick="revealQuiz(this)">
+        <div class="letter">C</div>
+        <div class="text code-text">red, blue, green (3 lines)</div>
+      </div>
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">D</div>
+        <div class="text">Error 🚨</div>
+      </div>
+    </div>
+    <div class="quiz-hint">👆 Tap any answer · for c in colors gives c = each item</div>
+  </div>
+  <div class="chrome-bot">
+    <span>Quiz 1 · Iteration</span>
+    <span>09 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 10. SECTION 2 — enumerate + max/min/sum ══ -->
+<section class="slide section-divider">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Part 2 of 3</div>
+  </div>
+  <div class="num">02</div>
+  <div class="pad" style="padding-top: 520px;">
+    <div class="eyebrow">PART TWO · enumerate &amp; stats</div>
+    <h2 class="h-title" style="max-width: 1400px;">Index + value,<br><span class="ac-y">together.</span></h2>
+    <p style="font-family:var(--font-mono);font-size:32px;color:rgba(255,255,255,0.6);margin-top:24px">enumerate · max · min · sum</p>
+    <div class="progress">
+      <div class="dot done"></div>
+      <div class="dot now"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Section 02 · enumerate</span>
+    <span>10 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 11. CONCEPT — enumerate + max/min/sum ══ -->
+<section class="slide concept">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">enumerate + stats</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🔢 enumerate() = (index, value)</div>
+    <h2 class="h-big" style="max-width: 1600px;">Need both? <span class="ac">enumerate.</span></h2>
+    <div class="split">
+      <div class="points">
+        <div class="point">
+          <div class="bullet">#</div>
+          <div>
+            <h4>enumerate gives you BOTH</h4>
+            <p><code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">for i, name in enumerate(list):</code></p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">📊</div>
+          <div>
+            <h4>Built-in stats functions</h4>
+            <p><code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:18px">max(list)</code>, <code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:18px">min(list)</code>, <code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:18px">sum(list)</code> — no loop!</p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">⚡</div>
+          <div>
+            <h4>Or DIY with loop</h4>
+            <p>Track <code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:18px">total = 0</code> and <code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:18px">biggest = 0</code> as you walk.</p>
+          </div>
+        </div>
+      </div>
+      <div class="diagram-box">
+        <div style="display:flex;flex-direction:column;gap:12px;width:100%;font-family:var(--font-mono)">
+          <div style="font-family:var(--font-display);font-size:18px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;text-align:center;margin-bottom:6px">scores = [85, 92, 78, 95, 88]</div>
+          <div style="display:flex;align-items:center;gap:14px;background:#fff;padding:14px 18px;border-radius:12px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)">
+            <div style="font-family:var(--font-display);font-weight:700;color:var(--py-blue);min-width:80px">sum</div>
+            <div style="font-size:20px">→ <strong>438</strong></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;background:#fff;padding:14px 18px;border-radius:12px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)">
+            <div style="font-family:var(--font-display);font-weight:700;color:var(--py-blue);min-width:80px">max</div>
+            <div style="font-size:20px">→ <strong>95</strong> 🥇</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;background:#fff;padding:14px 18px;border-radius:12px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)">
+            <div style="font-family:var(--font-display);font-weight:700;color:var(--py-blue);min-width:80px">min</div>
+            <div style="font-size:20px">→ <strong>78</strong></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;background:#fff;padding:14px 18px;border-radius:12px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)">
+            <div style="font-family:var(--font-display);font-weight:700;color:var(--py-blue);min-width:80px">avg</div>
+            <div style="font-size:20px">→ <strong>87.6</strong> (sum/len)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>enumerate + max/min/sum</span>
+    <span>11 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 12. WORKSHOP 2 — Test Scores ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill">Workshop 2</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Hands-on · Workshop 2</div>
+    <h2 class="h-title" style="max-width: 1400px;">Test <span class="ac">Scores.</span> 📊</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">List of 5 subject scores → find <strong>highest, lowest, total, average</strong></p>
+        <p class="body" style="margin-top:14px">Use <strong>max() / min() / sum()</strong> + a loop to print each subject</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>5 subjects + 5 scores (2 lists)</div>
+          <div class="check"><div class="box"></div>Loop with enumerate to print each</div>
+          <div class="check"><div class="box"></div>Use max(), min(), sum()</div>
+          <div class="check"><div class="box"></div>average = sum(scores) / len(scores)</div>
+        </div>
+        <a href="workshops/workshop_02_test_scores.py" class="file-btn">📄 workshop_02_test_scores.py</a>
+      </div>
+      <div class="illust" style="background:#dcf0e4">📊</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">15 min</div></div></div>
+      <div class="info"><div class="ico">👥</div><div><div class="label">Format</div><div class="value">Solo</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">enumerate + stats</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Workshop 2 · Test Scores</span>
+    <span>12 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 13. MINI — Coin Hunt ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:#2e7d32">Mini</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Mini exercise · Track stats yourself</div>
+    <h2 class="h-title" style="max-width: 1400px;">Coin <span class="ac">Hunt.</span> 🪙</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">A list of coin values → DIY find total + biggest <strong>without</strong> using sum() / max()</p>
+        <p class="body" style="margin-top:14px">Track <code style="background:var(--yellow);padding:4px 10px;border-radius:6px;font-family:var(--font-mono);font-size:20px">total = 0</code> and <code style="background:var(--yellow);padding:4px 10px;border-radius:6px;font-family:var(--font-mono);font-size:20px">biggest = 0</code> in the loop.</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>Loop through coins list</div>
+          <div class="check"><div class="box"></div>Add each to total</div>
+          <div class="check"><div class="box"></div>If coin > biggest → update biggest</div>
+          <div class="check"><div class="box"></div>(Bonus) Compare with sum() / max()</div>
+        </div>
+        <a href="workshops/mini_coin_hunt.py" class="file-btn">📄 mini_coin_hunt.py</a>
+      </div>
+      <div class="illust" style="background:#fff2ca;font-size:140px">🪙</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">15 min</div></div></div>
+      <div class="info"><div class="ico">👥</div><div><div class="label">Format</div><div class="value">Solo</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">DIY accumulator + max</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Mini · Coin Hunt</span>
+    <span>13 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 14. SECTION 3 — Project ══ -->
+<section class="slide section-divider">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Part 3 of 3</div>
+  </div>
+  <div class="num">03</div>
+  <div class="pad" style="padding-top: 520px;">
+    <div class="eyebrow">🎯 PROJECT · Real-life data</div>
+    <h2 class="h-title" style="max-width: 1400px;">Snack budget<br><span class="ac-y">analyzer.</span></h2>
+    <p style="font-family:var(--font-mono);font-size:32px;color:rgba(255,255,255,0.6);margin-top:24px">7 days · spent · stats · insights</p>
+    <div class="progress">
+      <div class="dot done"></div>
+      <div class="dot done"></div>
+      <div class="dot now"></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Section 03 · Snack Budget</span>
+    <span>14 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 15. PROJECT — Snack Budget ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:var(--ink)">🎯 Project</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🎯 Project · 25 min</div>
+    <h2 class="h-title" style="max-width: 1400px;">Snack <span class="ac">Budget.</span> 🍿</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">Ask user for their <strong>snack money</strong> for 7 days → analyze the week!</p>
+        <p class="body" style="margin-top:8px">Print: total, average, biggest day, smallest day, days over 50 baht</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>Loop 7 times to ask Mon-Sun</div>
+          <div class="check"><div class="box"></div>Append each amount to a list</div>
+          <div class="check"><div class="box"></div>Use sum() / max() / min()</div>
+          <div class="check"><div class="box"></div>Use enumerate to find which day</div>
+          <div class="check"><div class="box"></div>🏠 Talk with parents about real spending!</div>
+        </div>
+        <a href="workshops/project_snack_budget.py" class="file-btn">🎯 project_snack_budget.py</a>
+      </div>
+      <div class="illust" style="background:linear-gradient(135deg,var(--py-yellow),#ffaa00);font-size:160px">🍿</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">25 min</div></div></div>
+      <div class="info"><div class="ico">🏠</div><div><div class="label">Share</div><div class="value">Discuss with parents!</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">Loop · List · Stats</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Project · Snack Budget</span>
+    <span>15 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 16. QUIZ 2 — enumerate ══ -->
+<section class="slide quiz">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:var(--yellow);color:var(--ink)">Final Quiz</span></div>
+  </div>
+  <div class="pad" style="padding-top: 130px;">
+    <div class="eyebrow">⚡ Final Quiz · enumerate</div>
+    <h2 class="question">First <span class="ac-y">enumerate value</span> for index?</h2>
+    <div class="q-code"><span style="color:#9cb4ff">items</span> = [<span style="color:#7ed4a5">"a"</span>, <span style="color:#7ed4a5">"b"</span>, <span style="color:#7ed4a5">"c"</span>]
+<span style="color:#ff7a85">for</span> <span style="color:#9cb4ff">i</span>, <span style="color:#9cb4ff">x</span> <span style="color:#ff7a85">in</span> <span style="color:#ffd479">enumerate</span>(<span style="color:#9cb4ff">items</span>):
+    <span style="color:#ffd479">print</span>(<span style="color:#9cb4ff">i</span>)</div>
+    <div class="options">
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">A</div>
+        <div class="text code-text">1, 2, 3</div>
+      </div>
+      <div class="opt" data-correct="true" onclick="revealQuiz(this)">
+        <div class="letter">B</div>
+        <div class="text code-text">0, 1, 2</div>
+      </div>
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">C</div>
+        <div class="text code-text">a, b, c</div>
+      </div>
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">D</div>
+        <div class="text">Error 🚨</div>
+      </div>
+    </div>
+    <div class="quiz-hint">👆 Tap any · enumerate starts at index 0 by default</div>
+  </div>
+  <div class="chrome-bot">
+    <span>Quiz 2 · enumerate</span>
+    <span>16 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 17. HOMEWORK ══ -->
+<section class="slide homework">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Homework · 3 levels</div>
+  </div>
+  <div class="pad" style="padding-top: 120px;">
+    <div class="eyebrow">📚 Homework · Pick your level</div>
+    <h2 class="h-big">Take it <span class="ac">home.</span> 📖</h2>
+    <div class="hw-grid">
+      <!-- HW1 -->
+      <div class="hw-card">
+        <div class="hw-tag">HW1 · Required</div>
+        <h3>📊 My Real Scores</h3>
+        <p class="hw-task">Use <strong>YOUR real test scores</strong> from 5 subjects. Find <strong>max, min, average</strong>. Print which subject was best!</p>
+        <div class="hw-sub">Example Output</div>
+<div class="hw-example"><span class="tk-cm"># Real scores from your school:</span>
+Math   : <span class="tk-num">85</span>
+English: <span class="tk-num">92</span>
+Science: <span class="tk-num">78</span>
+Thai   : <span class="tk-num">95</span>
+Art    : <span class="tk-num">88</span>
+<span class="tk-cm"># 🥇 Best: Thai (95)</span>
+<span class="tk-cm"># 📉 Lowest: Science (78)</span>
+<span class="tk-cm"># 📊 Average: 87.6</span></div>
+        <div class="hw-bonus">
+          <strong>🎁 Bonus:</strong> Use enumerate to find which subject (not just the score). Show parents → talk about subjects to improve!
+        </div>
+        <div class="hw-foot">
+          <span class="hw-stars">⭐⭐</span>
+          <a href="workshops/hw1_my_scores.py" class="hw-btn">📄 Open file</a>
+        </div>
+      </div>
+      <!-- HW2 -->
+      <div class="hw-card mid">
+        <div class="hw-tag">HW2 · Advanced</div>
+        <h3>🏪 7-Eleven Prices</h3>
+        <p class="hw-task">List of <strong>10 snack prices</strong> from real 7-11. Print: cheapest, most expensive, total, average. Filter items under 20 baht.</p>
+        <div class="hw-sub">Example Output</div>
+<div class="hw-example"><span class="tk-cm"># 10 real 7-11 items:</span>
+Cheapest : <span class="tk-num">8</span> baht
+Priciest : <span class="tk-num">95</span> baht
+Total    : <span class="tk-num">387</span> baht
+Average  : <span class="tk-num">38.7</span> baht
+<span class="tk-cm"># 🟢 Under 20 baht: 4 items</span></div>
+        <div class="hw-bonus">
+          <strong>🎁 Bonus:</strong> Calculate how many items you can buy with 100 baht (greedy: pick cheapest first).
+        </div>
+        <div class="hw-foot">
+          <span class="hw-stars">⭐⭐⭐</span>
+          <a href="workshops/hw2_seven_eleven.py" class="hw-btn">📄 Open file</a>
+        </div>
+      </div>
+      <!-- HW3 -->
+      <div class="hw-card hard">
+        <div class="hw-tag">HW3 · Expert</div>
+        <h3>📜 Grade Card</h3>
+        <p class="hw-task">List of scores → for EACH score, assign letter grade (A/B/C/D/F) using if-elif. Count pass/fail. Show grade distribution.</p>
+        <div class="hw-sub">Example Output</div>
+<div class="hw-example"><span class="tk-cm"># Score → Grade:</span>
+<span class="tk-num">95</span> → A
+<span class="tk-num">85</span> → B
+<span class="tk-num">72</span> → C
+<span class="tk-num">55</span> → F
+<span class="tk-cm"># ✅ Pass: 3 / 4</span>
+<span class="tk-cm"># ❌ Fail: 1 / 4</span></div>
+        <div class="hw-bonus">
+          <strong>🎁 Bonus:</strong> Count how many of each grade (3 A's, 2 B's, ...). Print as a mini-chart.
+        </div>
+        <div class="hw-foot">
+          <span class="hw-stars">⭐⭐⭐⭐⭐</span>
+          <a href="workshops/hw3_grade_card.py" class="hw-btn">📄 Open file</a>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:24px;padding:16px 24px;background:var(--yellow);border:2px solid var(--ink);border-radius:14px;display:flex;align-items:center;gap:14px;box-shadow:4px 4px 0 var(--ink)">
+      <span style="font-size:22px">📌</span>
+      <span style="font-size:18px;font-weight:600;font-family:var(--font-display)">Submit: Trinket link OR screenshot → LINE group · Deadline: before next session</span>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Homework · 3 levels</span>
+    <span>17 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 18. WRAP UP ══ -->
+<section class="slide recap">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Wrap up</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🎉 Today you mastered</div>
+    <h2 class="h-title" style="max-width: 1600px;">Lists are<br>your <span class="ac">superpower!</span></h2>
+    <div class="big-list">
+      <div class="item">
+        <div class="num">01</div>
+        <div class="text">for item in list — clean iteration<span>no index needed, just walk!</span></div>
+      </div>
+      <div class="item">
+        <div class="num">02</div>
+        <div class="text">enumerate — index AND value<span>for i, x in enumerate(...)</span></div>
+      </div>
+      <div class="item">
+        <div class="num">03</div>
+        <div class="text">max / min / sum — instant stats<span>plus DIY accumulator pattern</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Wrap up</span>
+    <span>18 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 19. GOODBYE ══ -->
+<section class="slide qa">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">See you next week</div>
+  </div>
+  <div class="emoji-party">
+    <div class="e e-main">📊</div>
+    <div class="e e-1">🪙</div>
+  </div>
+  <div class="pad" style="padding-top: 200px;position:relative;z-index:1">
+    <div class="eyebrow">Session 04 · Complete</div>
+    <h1 class="h-hero" style="max-width:1200px">Data<br><span class="ac-y">master!</span></h1>
+    <p class="sub">Today you analyzed <strong>real data with loops + lists</strong> — scores, prices, budgets.<br>Next session: <strong>While Loops</strong> — run until something happens! 🎲</p>
+    <div class="emoji-badges">
+      <span class="b">🔁</span>
+      <span class="b">🔢</span>
+      <span class="b">📊</span>
+      <span class="b">🍿</span>
+    </div>
+    <div style="margin-top:auto;display:flex;gap:24px;flex-wrap:wrap">
+      <div style="background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.2);border-radius:20px;padding:24px 28px;flex:1;min-width:340px;backdrop-filter:blur(10px)">
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px">🏠 Take home</div>
+        <div style="font-family:var(--font-display);font-size:26px;line-height:1.25">Pick HW1 / HW2 / HW3 → Trinket link to LINE</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.2);border-radius:20px;padding:24px 28px;flex:1;min-width:340px;backdrop-filter:blur(10px)">
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px">🔮 Next week</div>
+        <div style="font-family:var(--font-display);font-size:26px;line-height:1.25">Session 05<br>While Loops &amp; random!</div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>CodeLab Thailand · Python F2</span>
+    <span>19 / 19</span>
+  </div>
+</section>
+
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let idx = 0;
+  document.getElementById('total').textContent = slides.length;
+  function show(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[i].classList.add('active');
+    document.getElementById('cur').textContent = i + 1;
+    history.replaceState(null, '', '#' + (i + 1));
+  }
+  function next() { if (idx < slides.length - 1) { idx++; show(idx); } }
+  function prev() { if (idx > 0) { idx--; show(idx); } }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { idx = 0; show(idx); }
+    else if (e.key === 'End') { idx = slides.length - 1; show(idx); }
+  });
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!isNaN(hash) && hash >= 1 && hash <= slides.length) idx = hash - 1;
+  show(idx);
+
+  function revealQuiz(el) {
+    const slide = el.closest('.slide');
+    if (!slide) return;
+    slide.querySelectorAll('.opt').forEach(opt => {
+      opt.classList.add('revealed');
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+      else opt.classList.add('wrong');
+    });
+  }
+</script>
+</body>
+</html>

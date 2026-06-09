@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CodeLab · F2 Session 3 — For Loops Deep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+</head>
+<body>
+
+<div class="nav-hint">← → or SPACE to navigate</div>
+<button class="nav-btn prev" onclick="prev()">◀</button>
+<button class="nav-btn next" onclick="next()">▶</button>
+<div class="nav-counter"><strong id="cur">1</strong> / <span id="total">18</span></div>
+
+<a href="../ss2/index.html" class="session-nav prev-session">
+  <span class="session-arrow">◀</span>
+  <span class="session-label">
+    <span class="session-hint">Previous</span>
+    <span class="session-name">Access & Slicing</span>
+  </span>
+</a>
+<a href="../ss4/index.html" class="session-nav next-session">
+  <span class="session-label">
+    <span class="session-hint">Next session</span>
+    <span class="session-name">Loops + Lists</span>
+  </span>
+  <span class="session-arrow">▶</span>
+</a>
+
+<div class="deck">
+
+<!-- ══ 1. COVER ══ -->
+<section class="slide cover cover-python">
+  <div class="sun"></div>
+  <div class="halftone"></div>
+  <div class="python-mark">
+    <img src="../../logo/python-logo.svg" alt="Python">
+  </div>
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill">Python Foundation 2</span></div>
+  </div>
+  <div class="pad" style="padding-top: 180px;">
+    <div class="eyebrow">Session 03 · Level 2 · The Data Master</div>
+    <h1 class="h-hero" style="max-width: 1200px;">For Loops<br>go <span class="ac-y">deep.</span></h1>
+    <div class="tag-row">
+      <span class="tag">🔁 range(step)</span>
+      <span class="tag">➕ Accumulator</span>
+      <span class="tag">🎂 Budget App</span>
+      <span class="tag">⏱ 90 min</span>
+    </div>
+    <div class="meta">
+      <div><span class="label">Level</span>Foundation 2</div>
+      <div><span class="label">Session</span>03 / 12</div>
+    </div>
+  </div>
+  <div class="big-num">03</div>
+  <div class="chrome-bot">
+    <span>codelabthailand.com</span>
+    <span>Session 03 / 12</span>
+  </div>
+</section>
+
+<!-- ══ 2. OBJECTIVES ══ -->
+<section class="slide objectives">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Today's goals</div>
+  </div>
+  <div class="pad" style="padding-top: 150px;">
+    <div class="eyebrow">What you'll learn today</div>
+    <h2 class="h-title" style="max-width: 1500px;">By the end of class,<br>you'll <span class="ac">do three things.</span></h2>
+    <div class="grid">
+      <div class="obj-card c1">
+        <div class="num">1</div>
+        <div class="icon">🎯</div>
+        <h3>Use range(step)</h3>
+        <p>Count <strong>backwards</strong> or <strong>skip numbers</strong> using 3 arguments: start, stop, step.</p>
+      </div>
+      <div class="obj-card c2">
+        <div class="num">2</div>
+        <div class="icon">➕</div>
+        <h3>Build Accumulators</h3>
+        <p>Sum up values using the pattern <code style="background:#fff2ca;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:19px">total = total + x</code> inside a loop.</p>
+      </div>
+      <div class="obj-card c3">
+        <div class="num">3</div>
+        <div class="icon">🎂</div>
+        <h3>Create a Budget App</h3>
+        <p>Build a real party budget calculator — loop through 5 items and sum the total.</p>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>3 learning objectives</span>
+    <span>02 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 3. RECAP S2 ══ -->
+<section class="slide recap">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Recap · Session 2</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🔁 Previously on Session 2</div>
+    <h2 class="h-title" style="max-width: 1600px;">We learned<br><span class="ac">Slicing.</span></h2>
+    <div class="chips">
+      <span class="chip"><span class="bullet" style="background:var(--red)"></span>list[0] · list[-1]</span>
+      <span class="chip"><span class="bullet" style="background:var(--yellow)"></span>list[1:4] slicing</span>
+      <span class="chip"><span class="bullet" style="background:var(--mint)"></span>list[i] = new value</span>
+      <span class="chip"><span class="bullet" style="background:var(--sky)"></span>Top 5 best friends</span>
+    </div>
+    <div class="big-list">
+      <div class="item">
+        <div class="num">01</div>
+        <div class="text">Index — access items by position<span>list[0] first · list[-1] last</span></div>
+      </div>
+      <div class="item">
+        <div class="num">02</div>
+        <div class="text">Slicing — grab a range of items<span>list[1:4], list[:3], list[-3:]</span></div>
+      </div>
+      <div class="item">
+        <div class="num">03</div>
+        <div class="text">Editing — change values in place<span>list[i] = new_value</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Previous session</span>
+    <span>03 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 4. HW REVIEW ══ -->
+<section class="slide" style="background:var(--cream-2)">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Homework check</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">📝 Homework Review</div>
+    <h2 class="h-title">How many <span class="ac">⭐ stars</span><br>did you get?</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;flex:1">
+      <div style="background:#fff;border:2px solid var(--ink);border-radius:20px;padding:32px;box-shadow:8px 8px 0 var(--ink)">
+        <div style="display:inline-block;background:var(--red);color:#fff;padding:4px 14px;border-radius:999px;font-size:14px;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:20px">HW1 · required</div>
+        <h3 style="font-family:var(--font-display);font-size:36px;margin-bottom:10px">📖 Monday<br>Schedule</h3>
+        <p style="font-size:20px;color:var(--ink-2);line-height:1.45">Change the subject in period 3 using index</p>
+        <div style="color:#f59e0b;font-size:28px;margin-top:20px">⭐⭐</div>
+      </div>
+      <div style="background:#fff;border:2px solid var(--ink);border-radius:20px;padding:32px;box-shadow:8px 8px 0 var(--ink)">
+        <div style="display:inline-block;background:#f59e0b;color:#fff;padding:4px 14px;border-radius:999px;font-size:14px;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:20px">HW2 · advanced</div>
+        <h3 style="font-family:var(--font-display);font-size:36px;margin-bottom:10px">🔐 Secret Code<br>from Names</h3>
+        <p style="font-size:20px;color:var(--ink-2);line-height:1.45">Pull letters from names → mix into secret words</p>
+        <div style="color:#f59e0b;font-size:28px;margin-top:20px">⭐⭐⭐</div>
+      </div>
+      <div style="background:#fff;border:2px solid var(--ink);border-radius:20px;padding:32px;box-shadow:8px 8px 0 var(--ink)">
+        <div style="display:inline-block;background:var(--ink);color:#fff;padding:4px 14px;border-radius:999px;font-size:14px;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:20px">HW3 · expert</div>
+        <h3 style="font-family:var(--font-display);font-size:36px;margin-bottom:10px">🎴 UNO<br>Dealer</h3>
+        <p style="font-size:20px;color:var(--ink-2);line-height:1.45">Slice 28 cards → deal 4 players × 7 cards. Play with family!</p>
+        <div style="color:#f59e0b;font-size:28px;margin-top:20px">⭐⭐⭐⭐⭐</div>
+      </div>
+    </div>
+    <div style="margin-top:32px;padding:20px 28px;background:var(--yellow);border:2px solid var(--ink);border-radius:16px;display:flex;align-items:center;gap:16px;box-shadow:5px 5px 0 var(--ink)">
+      <span style="font-size:32px">🗣️</span>
+      <span style="font-size:22px;font-weight:600;font-family:var(--font-display)">Who played UNO with family? Share your story!</span>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Homework review</span>
+    <span>04 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 5. AGENDA ══ -->
+<section class="slide steps">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Today's flow</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🎯 5 things we'll do today</div>
+    <h2 class="h-title" style="max-width: 1600px;">Let's <span class="ac">go!</span></h2>
+    <div class="grid">
+      <div class="step">
+        <div class="n">1</div>
+        <h4>Countdown 🎊</h4>
+        <p>Count 10 → 1 using <br><strong>range(step=-1)</strong></p>
+        <span class="meta-pill red">Workshop · 10 min</span>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h4>Even Sum ➕</h4>
+        <p>Sum 2 to 20 using <br><strong>accumulator</strong> pattern</p>
+        <span class="meta-pill red">Workshop · 15 min</span>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h4>CTk Slider 🎨</h4>
+        <p>Interactive GUI — <br><strong>Times Table</strong> app</p>
+        <span class="meta-pill yellow">Mini · 15 min</span>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <h4>Budget App 🎂</h4>
+        <p>Birthday party <br>budget calculator</p>
+        <span class="meta-pill">🎯 Project · 25 min</span>
+      </div>
+      <div class="step">
+        <div class="n">5</div>
+        <h4>Homework 📚</h4>
+        <p>3 levels — pick <br>your difficulty</p>
+        <span class="meta-pill">Take-home</span>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>5 activities today</span>
+    <span>05 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 6. SECTION DIVIDER 1 ══ -->
+<section class="slide section-divider">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Part 1 of 3</div>
+  </div>
+  <div class="num">01</div>
+  <div class="pad" style="padding-top: 520px;">
+    <div class="eyebrow">PART ONE · range() deep dive</div>
+    <h2 class="h-title" style="max-width: 1400px;">Meet the full<br><span class="ac">range.</span></h2>
+    <p style="font-family:var(--font-mono);font-size:32px;color:rgba(255,255,255,0.6);margin-top:24px">start · stop · step</p>
+    <div class="progress">
+      <div class="dot now"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Section 01 · range(step)</span>
+    <span>06 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 7. CONCEPT range ══ -->
+<section class="slide concept">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">range() full power</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">range(start, stop, step)</div>
+    <h2 class="h-big" style="max-width: 1600px;"><span class="ac">3 arguments</span> control the whole loop</h2>
+    <div class="split">
+      <div class="points">
+        <div class="point">
+          <div class="bullet">S</div>
+          <div>
+            <h4>start — where to begin</h4>
+            <p>The first number (included in the loop)</p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">E</div>
+          <div>
+            <h4>stop — where to end</h4>
+            <p>The stopping number <strong>(NOT included!)</strong></p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">↗</div>
+          <div>
+            <h4>step — jump size</h4>
+            <p>+1 (default) · +2 (evens) · -1 (backwards)</p>
+          </div>
+        </div>
+      </div>
+      <div class="diagram-box">
+        <div style="display:flex;flex-direction:column;gap:20px;font-family:var(--font-mono);font-size:28px">
+          <div style="background:var(--cream-2);padding:18px 24px;border-radius:12px;border:2px solid var(--ink)">
+            <div style="color:var(--muted);font-size:16px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">NORMAL</div>
+            <div><span style="color:var(--red);font-weight:700">range(1, 6)</span> → 1, 2, 3, 4, 5</div>
+          </div>
+          <div style="background:#fff2ca;padding:18px 24px;border-radius:12px;border:2px solid var(--ink)">
+            <div style="color:var(--muted);font-size:16px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">STEP=2 (EVENS)</div>
+            <div><span style="color:var(--red);font-weight:700">range(0, 10, 2)</span> → 0, 2, 4, 6, 8</div>
+          </div>
+          <div style="background:#dcf0e4;padding:18px 24px;border-radius:12px;border:2px solid var(--ink)">
+            <div style="color:var(--muted);font-size:16px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">STEP=-1 (BACKWARDS)</div>
+            <div><span style="color:var(--red);font-weight:700">range(10, 0, -1)</span> → 10, 9, 8 ... 1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>range() — the full picture</span>
+    <span>07 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 8. CODE range ══ -->
+<section class="slide code-slide">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Code · range()</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Live code · Try it!</div>
+    <h2 class="h-big" style="max-width: 1400px;">3 ways to loop with <span class="ac">range.</span></h2>
+    <div class="code-shell">
+      <div class="bar">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="file">range_examples.py</div>
+      </div>
+<pre><span class="tk-cm"># 1) Countdown — step backwards</span>
+<span class="tk-kw">for</span> <span class="tk-var">i</span> <span class="tk-kw">in</span> <span class="tk-fn">range</span>(<span class="tk-num">10</span>, <span class="tk-num">0</span>, <span class="tk-num">-1</span>):
+    <span class="tk-fn">print</span>(<span class="tk-var">i</span>)        <span class="tk-cm"># 10, 9, 8, ..., 1</span>
+
+<span class="tk-cm"># 2) Even numbers — skip by 2</span>
+<span class="tk-kw">for</span> <span class="tk-var">n</span> <span class="tk-kw">in</span> <span class="tk-fn">range</span>(<span class="tk-num">2</span>, <span class="tk-num">21</span>, <span class="tk-num">2</span>):
+    <span class="tk-fn">print</span>(<span class="tk-var">n</span>)        <span class="tk-cm"># 2, 4, 6, ..., 20</span>
+
+<span class="tk-cm"># 3) Multiples of 5 — skip by 5</span>
+<span class="tk-kw">for</span> <span class="tk-var">m</span> <span class="tk-kw">in</span> <span class="tk-fn">range</span>(<span class="tk-num">5</span>, <span class="tk-num">101</span>, <span class="tk-num">5</span>):
+    <span class="tk-fn">print</span>(<span class="tk-var">m</span>)        <span class="tk-cm"># 5, 10, 15, ..., 100</span>
+</pre>
+    </div>
+    <div class="code-callout">
+      <span class="pill">💡 Tip</span>
+      <span><strong>stop is exclusive!</strong> Want up to 20? Write range(..., 21, ...)</span>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>range(start, stop, step)</span>
+    <span>08 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 9. W1 Countdown ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill">Workshop 1</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Hands-on · Workshop 1</div>
+    <h2 class="h-title" style="max-width: 1400px;">New Year<br><span class="ac">Countdown!</span> 🎊</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">Count from <strong>10 down to 1</strong>, then print "Happy New Year!"</p>
+        <p class="body" style="margin-top:16px">Hint: use <code style="background:var(--yellow);padding:4px 12px;border-radius:8px;font-family:var(--font-mono);font-size:24px">range(10, 0, -1)</code></p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>Use range with 3 arguments</div>
+          <div class="check"><div class="box"></div>Set step = -1 to go backwards</div>
+          <div class="check"><div class="box"></div>Print the message AFTER the loop</div>
+        </div>
+        <a href="workshops/workshop_01_countdown.py" class="file-btn">📄 workshop_01_countdown.py</a>
+      </div>
+      <div class="illust">🎊</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">10 min</div></div></div>
+      <div class="info"><div class="ico">👥</div><div><div class="label">Format</div><div class="value">Solo</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">range(step=-1)</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Workshop 1 · Countdown</span>
+    <span>09 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 10. SECTION DIVIDER 2 ══ -->
+<section class="slide section-divider">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Part 2 of 3</div>
+  </div>
+  <div class="num">02</div>
+  <div class="pad" style="padding-top: 520px;">
+    <div class="eyebrow">PART TWO</div>
+    <h2 class="h-title" style="max-width: 1400px;">Sum inside a loop<br><span class="ac-y">Accumulator.</span></h2>
+    <div class="progress">
+      <div class="dot done"></div>
+      <div class="dot now"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Section 02 · Accumulator</span>
+    <span>10 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 11. CONCEPT Accumulator ══ -->
+<section class="slide concept">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Accumulator pattern</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Pattern · Accumulator</div>
+    <h2 class="h-big" style="max-width: 1600px;"><code style="font-family:var(--font-mono);background:var(--yellow);padding:6px 20px;border-radius:12px">total = total + x</code></h2>
+    <div class="split">
+      <div class="points">
+        <div class="point">
+          <div class="bullet">1</div>
+          <div>
+            <h4>Start at 0</h4>
+            <p>Create <code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">total = 0</code> <strong>before</strong> the loop</p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">2</div>
+          <div>
+            <h4>Add each round</h4>
+            <p>Inside loop: <code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">total = total + ?</code></p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">3</div>
+          <div>
+            <h4>Print after loop</h4>
+            <p>Finish the loop first, THEN print the result</p>
+          </div>
+        </div>
+      </div>
+      <div class="diagram-box">
+        <div style="text-align:center">
+          <div style="font-family:var(--font-mono);font-size:22px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:30px">Rounds 1 to 5</div>
+          <div class="dice-row">
+            <div class="dice">3</div>
+            <div class="dice">5</div>
+            <div class="dice">2</div>
+            <div class="dice">7</div>
+            <div class="dice">4</div>
+          </div>
+          <div class="big-eq">
+            3 <span class="plus">+</span> 5 <span class="plus">+</span> 2 <span class="plus">+</span> 7 <span class="plus">+</span> 4
+          </div>
+          <div style="font-family:var(--font-display);font-weight:900;font-size:64px;color:var(--red)">= 21</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Accumulator — sum it up!</span>
+    <span>11 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 12. CODE Accumulator ══ -->
+<section class="slide code-slide">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Code · Accumulator</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Live code · Accumulator</div>
+    <h2 class="h-big" style="max-width: 1400px;">Sum even numbers <span class="ac">2 to 20</span></h2>
+    <div class="code-shell">
+      <div class="bar">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="file">even_sum.py</div>
+      </div>
+<pre><span class="tk-cm"># Sum even numbers: 2, 4, 6, ..., 20</span>
+<span class="tk-var">total</span> = <span class="tk-num">0</span>                           <span class="tk-cm"># ← start at 0</span>
+
+<span class="tk-kw">for</span> <span class="tk-var">n</span> <span class="tk-kw">in</span> <span class="tk-fn">range</span>(<span class="tk-num">2</span>, <span class="tk-num">21</span>, <span class="tk-num">2</span>):
+    <span class="tk-var">total</span> = <span class="tk-var">total</span> + <span class="tk-var">n</span>          <span class="tk-cm"># ← add every round</span>
+    <span class="tk-fn">print</span>(<span class="tk-fn">f</span><span class="tk-str">"Added {n} → total is {total}"</span>)
+
+<span class="tk-fn">print</span>(<span class="tk-fn">f</span><span class="tk-str">"💰 Grand total = {total}"</span>)  <span class="tk-cm"># = 110</span>
+</pre>
+    </div>
+    <div class="code-callout">
+      <span class="pill">⚡ Shortcut</span>
+      <span><code style="font-family:var(--font-mono);background:var(--ink);color:#ffd479;padding:4px 10px;border-radius:6px">total += n</code> is short for <code style="font-family:var(--font-mono);background:var(--ink);color:#ffd479;padding:4px 10px;border-radius:6px">total = total + n</code></span>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Accumulator in code</span>
+    <span>12 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 13. W2 Even Sum ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill">Workshop 2</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Hands-on · Workshop 2</div>
+    <h2 class="h-title" style="max-width: 1400px;">Sum even<br>numbers <span class="ac">2 to 20.</span> ➕</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">Use <strong>range(step=2)</strong> + <strong>accumulator</strong> together</p>
+        <p class="body" style="margin-top:12px">Print each round: "Added X → total is Y", then grand total at the end</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>Create total = 0 BEFORE the loop</div>
+          <div class="check"><div class="box"></div>Use range(2, 21, 2) for even numbers</div>
+          <div class="check"><div class="box"></div>Try the += shortcut too</div>
+        </div>
+        <a href="workshops/workshop_02_even_sum.py" class="file-btn">📄 workshop_02_even_sum.py</a>
+      </div>
+      <div class="illust" style="background:#dcf0e4">➕</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">15 min</div></div></div>
+      <div class="info"><div class="ico">👥</div><div><div class="label">Format</div><div class="value">Solo</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">Accumulator + step=2</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Workshop 2 · Even Sum</span>
+    <span>13 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 14. Mini CTk ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:#f59e0b">Mini · CTk</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Mini Workshop · CTk Template</div>
+    <h2 class="h-title" style="max-width: 1400px;">Times Table <span class="ac">App.</span> 🎨</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">Drag the <strong>slider</strong> to pick a number → see its times table <strong>1 to 12</strong> instantly!</p>
+        <p class="body" style="margin-top:14px">We provide the GUI template — you write the logic inside the function.</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>Fix the formula inside show_table()</div>
+          <div class="check"><div class="box"></div>Use a for loop inside a function</div>
+          <div class="check"><div class="box"></div>Bonus: highlight ⭐ when result &gt; 50</div>
+        </div>
+        <a href="workshops/mini_times_table_app_TEMPLATE.py" class="file-btn">🎨 Open CTk Template</a>
+      </div>
+      <div class="illust" style="background:var(--ink);color:#fff;font-family:var(--font-mono);font-size:22px;padding:30px;box-shadow:10px 10px 0 var(--red)">
+        <div style="text-align:left;color:#ffd479;line-height:1.7">
+          <div style="color:#6b7280;font-size:16px">✖️ Table of 7</div>
+          <div>7 × 1 = 7</div>
+          <div>7 × 2 = 14</div>
+          <div>7 × 3 = 21</div>
+          <div>7 × 4 = 28</div>
+          <div>7 × 5 = 35</div>
+          <div style="color:#7ed4a5">7 × 6 = 42</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">15 min</div></div></div>
+      <div class="info"><div class="ico">📦</div><div><div class="label">Install</div><div class="value">customtkinter</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">Loop + GUI</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Mini · Times Table Slider</span>
+    <span>14 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 15. SECTION DIVIDER 3 ══ -->
+<section class="slide section-divider">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Part 3 of 3</div>
+  </div>
+  <div class="num">03</div>
+  <div class="pad" style="padding-top: 520px;">
+    <div class="eyebrow">🎯 PROJECT</div>
+    <h2 class="h-title" style="max-width: 1400px;">Build an app<br><span class="ac-y">for real.</span></h2>
+    <div class="progress">
+      <div class="dot done"></div>
+      <div class="dot done"></div>
+      <div class="dot now"></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Section 03 · Budget App</span>
+    <span>15 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 16. Project Budget ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:var(--ink)">🎯 Project</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🎯 Project · 25 min</div>
+    <h2 class="h-title" style="max-width: 1400px;">Birthday Party<br><span class="ac">Budget.</span> 🎂</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">Loop to ask prices of <strong>5 items</strong> → sum them up → check if over budget</p>
+        <p class="body" style="margin-top:12px">Combines <strong>loop + list + accumulator + if-else</strong> in one task!</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>Loop to ask 5 item prices</div>
+          <div class="check"><div class="box"></div>total += price every round</div>
+          <div class="check"><div class="box"></div>If total &gt; 1000 → ⚠️ over budget!</div>
+          <div class="check"><div class="box"></div>Bonus: find the most expensive item</div>
+          <div class="check"><div class="box"></div>🏠 Ask parents: "What's a realistic party budget?"</div>
+        </div>
+        <a href="workshops/project_birthday_budget.py" class="file-btn">🎯 project_birthday_budget.py</a>
+      </div>
+      <div class="illust" style="background:#fff2ca;font-size:180px">🎂</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">25 min</div></div></div>
+      <div class="info"><div class="ico">🏠</div><div><div class="label">Share</div><div class="value">Talk with parents!</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skills</div><div class="value">Loop + Sum + If</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Project · Birthday Budget</span>
+    <span>16 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 17. HOMEWORK ══ -->
+<section class="slide homework">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Homework · 3 levels</div>
+  </div>
+  <div class="pad" style="padding-top: 120px;">
+    <div class="eyebrow">📚 Homework · Pick your level</div>
+    <h2 class="h-big">Take it <span class="ac">home.</span> 📖</h2>
+
+    <div class="hw-grid">
+      <!-- HW1 -->
+      <div class="hw-card">
+        <div class="hw-tag">HW1 · Required</div>
+        <h3>👥 Classroom Roll Call</h3>
+        <p class="hw-task">Build a program that prints <strong>30 students</strong> with their IDs using a <code style="background:#fff2ca;padding:1px 5px;border-radius:3px;font-family:var(--font-mono);font-size:14px">for loop</code>. Use <code style="background:#fff2ca;padding:1px 5px;border-radius:3px;font-family:var(--font-mono);font-size:14px">range(1, 31)</code> to count.</p>
+
+        <div class="hw-sub">Example Output</div>
+<div class="hw-example"><span class="tk-cm"># Expected output:</span>
+Student <span class="tk-num">#1</span>: Alice
+Student <span class="tk-num">#2</span>: Bob
+Student <span class="tk-num">#3</span>: Charlie
+...
+Student <span class="tk-num">#30</span>: Emma</div>
+
+        <div class="hw-bonus">
+          <strong>🎁 Bonus:</strong> Print "Group A", "Group B"... every 5 students (hint: use <code style="font-family:var(--font-mono);font-size:12px">if i % 5 == 0</code>)
+        </div>
+
+        <div class="hw-foot">
+          <span class="hw-stars">⭐⭐</span>
+          <a href="workshops/hw1_classmates.py" class="hw-btn">📄 Open file</a>
+        </div>
+      </div>
+
+      <!-- HW2 -->
+      <div class="hw-card mid">
+        <div class="hw-tag">HW2 · Advanced</div>
+        <h3>💰 Savings Tracker</h3>
+        <p class="hw-task">Save <strong>5 baht per day for 30 days</strong>. Use accumulator pattern to track the daily total. Print the amount added AND running total every day.</p>
+
+        <div class="hw-sub">Example Output</div>
+<div class="hw-example"><span class="tk-cm"># Day-by-day savings:</span>
+Day <span class="tk-num">1</span>: +<span class="tk-num">5</span> → total: <span class="tk-num">5</span>
+Day <span class="tk-num">2</span>: +<span class="tk-num">5</span> → total: <span class="tk-num">10</span>
+Day <span class="tk-num">3</span>: +<span class="tk-num">5</span> → total: <span class="tk-num">15</span>
+...
+Day <span class="tk-num">30</span>: +<span class="tk-num">5</span> → total: <span class="tk-num">150</span>
+<span class="tk-cm"># 🎉 You saved 150 baht!</span></div>
+
+        <div class="hw-bonus">
+          <strong>🎁 Bonus:</strong> Mark every 7th day with ✨ (weekly milestone). Or make daily amount grow each day (day 1: 5, day 2: 10, ...)
+        </div>
+
+        <div class="hw-foot">
+          <span class="hw-stars">⭐⭐⭐</span>
+          <a href="workshops/hw2_savings_plan.py" class="hw-btn">📄 Open file</a>
+        </div>
+      </div>
+
+      <!-- HW3 -->
+      <div class="hw-card hard">
+        <div class="hw-tag">HW3 · Expert</div>
+        <h3>🔺 Number Pyramid</h3>
+        <p class="hw-task">Build a pyramid using <strong>nested for loops</strong> (a loop inside a loop). Outer loop = rows. Inner loop = numbers in each row. Show to your parents!</p>
+
+        <div class="hw-sub">Example Output</div>
+<div class="hw-example"><span class="tk-cm"># 5-row pyramid:</span>
+<span class="tk-num">1</span>
+<span class="tk-num">1 2</span>
+<span class="tk-num">1 2 3</span>
+<span class="tk-num">1 2 3 4</span>
+<span class="tk-num">1 2 3 4 5</span></div>
+
+        <div class="hw-bonus">
+          <strong>🎁 Bonus:</strong> Inverted pyramid (5 rows → 1 row), or centered pyramid with spaces on the left (uses <code style="font-family:var(--font-mono);font-size:12px">" " * n</code>)
+        </div>
+
+        <div class="hw-foot">
+          <span class="hw-stars">⭐⭐⭐⭐⭐</span>
+          <a href="workshops/hw3_number_pyramid.py" class="hw-btn">📄 Open file</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;padding:16px 24px;background:var(--yellow);border:2px solid var(--ink);border-radius:14px;display:flex;align-items:center;gap:14px;box-shadow:4px 4px 0 var(--ink)">
+      <span style="font-size:22px">📌</span>
+      <span style="font-size:18px;font-weight:600;font-family:var(--font-display)">Submit: Screenshot of code + output → LINE group · Deadline: before next session</span>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Homework · 3 levels</span>
+    <span>17 / 18</span>
+  </div>
+</section>
+
+<!-- ══ 18. GOODBYE ══ -->
+<section class="slide qa">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">See you next week</div>
+  </div>
+  <div class="emoji-party">
+    <div class="e e-main">🎉</div>
+    <div class="e e-1">🎲</div>
+  </div>
+  <div class="pad" style="padding-top: 200px;position:relative;z-index:1">
+    <div class="eyebrow">Session 03 · Complete</div>
+    <h1 class="h-hero" style="max-width:1200px">Well<br><span class="ac-y">done!</span></h1>
+    <p class="sub">Today you mastered <strong>range(step)</strong> + <strong>accumulator</strong>.<br>Next session: <strong>Loops + Lists</strong> — iterate like a pro 🔁</p>
+    <div class="emoji-badges"><span class="b">🔁</span><span class="b">➕</span><span class="b">🎂</span><span class="b">💪</span></div>
+    <div style="margin-top:auto;display:flex;gap:24px;flex-wrap:wrap">
+      <div style="background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.2);border-radius:20px;padding:24px 28px;flex:1;min-width:340px;backdrop-filter:blur(10px)">
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px">🏠 Take home</div>
+        <div style="font-family:var(--font-display);font-size:26px;line-height:1.25">Pick a homework level → submit to LINE group</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.2);border-radius:20px;padding:24px 28px;flex:1;min-width:340px;backdrop-filter:blur(10px)">
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px">🔮 Next week</div>
+        <div style="font-family:var(--font-display);font-size:26px;line-height:1.25">Session 04<br>Loops + Lists together!</div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>CodeLab Thailand · Python F2</span>
+    <span>18 / 18</span>
+  </div>
+</section>
+
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let idx = 0;
+  document.getElementById('total').textContent = slides.length;
+  function show(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[i].classList.add('active');
+    document.getElementById('cur').textContent = i + 1;
+    history.replaceState(null, '', '#' + (i + 1));
+  }
+  function next() { if (idx < slides.length - 1) { idx++; show(idx); } }
+  function prev() { if (idx > 0) { idx--; show(idx); } }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { idx = 0; show(idx); }
+    else if (e.key === 'End') { idx = slides.length - 1; show(idx); }
+  });
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!isNaN(hash) && hash >= 1 && hash <= slides.length) idx = hash - 1;
+  show(idx);
+</script>
+</body>
+</html>

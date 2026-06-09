@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CodeLab · F2 Session 1 — Lists Intro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+</head>
+<body>
+
+<div class="nav-hint">← → or SPACE to navigate</div>
+<button class="nav-btn prev" onclick="prev()">◀</button>
+<button class="nav-btn next" onclick="next()">▶</button>
+<div class="nav-counter"><strong id="cur">1</strong> / <span id="total">19</span></div>
+
+<span class="session-nav prev-session disabled">
+  <span class="session-arrow">◀</span>
+  <span class="session-label">
+    <span class="session-hint">Previous</span>
+    <span class="session-name">— first F2 —</span>
+  </span>
+</span>
+<a href="../ss2/index.html" class="session-nav next-session">
+  <span class="session-label">
+    <span class="session-hint">Next session</span>
+    <span class="session-name">Access &amp; Slicing</span>
+  </span>
+  <span class="session-arrow">▶</span>
+</a>
+
+<div class="deck">
+
+<!-- ══ 1. COVER ══ -->
+<section class="slide cover cover-python">
+  <div class="sun"></div>
+  <div class="halftone"></div>
+  <div class="python-mark">
+    <img src="../../logo/python-logo.svg" alt="Python">
+  </div>
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill">Python Foundation 2</span></div>
+  </div>
+  <div class="pad" style="padding-top: 180px;">
+    <div class="eyebrow">Session 01 · Level 2 · The Data Master</div>
+    <h1 class="h-hero" style="max-width: 1200px;">Meet<br><span class="ac-y">lists.</span></h1>
+    <div class="tag-row">
+      <span class="tag">📋 Lists</span>
+      <span class="tag">➕ append/remove</span>
+      <span class="tag">🔍 in / len</span>
+      <span class="tag">⏱ 90 min</span>
+    </div>
+    <div class="meta">
+      <div><span class="label">Level</span>Foundation 2</div>
+      <div><span class="label">Session</span>01 / 12</div>
+    </div>
+  </div>
+  <div class="big-num">01</div>
+  <div class="chrome-bot">
+    <span>codelabthailand.com</span>
+    <span>Session 01 / 12</span>
+  </div>
+</section>
+
+<!-- ══ 2. WELCOME TO F2 ══ -->
+<section class="slide" style="background:var(--cream-2)">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Welcome to Foundation 2</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🎉 Welcome to F2 — The Data Master</div>
+    <h2 class="h-title" style="max-width: 1600px;">From single values<br>to <span class="ac">collections.</span></h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:50px;flex:1;align-items:center">
+      <div>
+        <p class="body" style="margin-bottom:20px"><strong>F1 you learned:</strong> 1 variable = 1 value</p>
+        <div style="background:#fff;border:2px solid var(--ink);border-radius:14px;padding:20px 24px;font-family:var(--font-mono);font-size:24px;box-shadow:5px 5px 0 var(--ink)">
+          name = <span style="color:var(--py-blue)">"Alex"</span><br>
+          age  = <span style="color:var(--py-blue)">10</span><br>
+          food = <span style="color:var(--py-blue)">"Pizza"</span>
+        </div>
+        <p style="margin-top:20px;color:var(--muted);font-size:18px">Tiring if you have 100 friends...</p>
+      </div>
+      <div>
+        <p class="body" style="margin-bottom:20px;color:var(--py-blue)"><strong>F2 unlocks:</strong> 1 list = MANY values</p>
+        <div style="background:linear-gradient(135deg,var(--py-blue),var(--py-blue-dark));color:#fff;border:2px solid var(--ink);border-radius:14px;padding:20px 24px;font-family:var(--font-mono);font-size:24px;box-shadow:5px 5px 0 var(--ink)">
+          friends = [<span style="color:var(--py-yellow)">"Alex"</span>,<br>
+          &nbsp;&nbsp;<span style="color:var(--py-yellow)">"Bob"</span>, <span style="color:var(--py-yellow)">"Cat"</span>,<br>
+          &nbsp;&nbsp;<span style="color:var(--py-yellow)">"Dan"</span>, <span style="color:var(--py-yellow)">"Eve"</span>]
+        </div>
+        <p style="margin-top:20px;color:var(--muted);font-size:18px">Add as many as you want — one variable!</p>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>F1 → F2 · Single → Collection</span>
+    <span>02 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 3. OBJECTIVES ══ -->
+<section class="slide objectives">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Today's goals</div>
+  </div>
+  <div class="pad" style="padding-top: 150px;">
+    <div class="eyebrow">What you'll learn today</div>
+    <h2 class="h-title" style="max-width: 1500px;">By the end of class,<br>you'll <span class="ac">do three things.</span></h2>
+    <div class="grid">
+      <div class="obj-card c1">
+        <div class="num">1</div>
+        <div class="icon">📋</div>
+        <h3>Create a List</h3>
+        <p>Pack many items into one variable using <code style="background:#ffe1dd;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:18px">[ ]</code> brackets.</p>
+      </div>
+      <div class="obj-card c2">
+        <div class="num">2</div>
+        <div class="icon">➕</div>
+        <h3>Add &amp; Remove</h3>
+        <p>Use <code style="background:#fff2ca;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:18px">.append()</code>, <code style="background:#fff2ca;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:18px">.remove()</code>, <code style="background:#fff2ca;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:18px">.pop()</code> to manage your list.</p>
+      </div>
+      <div class="obj-card c3">
+        <div class="num">3</div>
+        <div class="icon">🔍</div>
+        <h3>Check &amp; Count</h3>
+        <p>Use <code style="background:#dcf0e4;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:18px">in</code> to find an item, <code style="background:#dcf0e4;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:18px">len()</code> to count them.</p>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>3 learning objectives</span>
+    <span>03 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 4. AGENDA ══ -->
+<section class="slide steps">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Today's flow</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🎯 5 things we'll do today</div>
+    <h2 class="h-title" style="max-width: 1600px;">Let's <span class="ac">go!</span></h2>
+    <div class="grid">
+      <div class="step">
+        <div class="n">1</div>
+        <h4>7-11 List 🛒</h4>
+        <p>Build a shopping list <br>append + remove</p>
+        <span class="meta-pill red">Workshop · 10 min</span>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h4>School Bag 🎒</h4>
+        <p>CTk GUI to add/remove<br>items in a bag</p>
+        <span class="meta-pill red">Workshop · 15 min</span>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h4>Find It! 🔍</h4>
+        <p>Use <strong>in</strong> to check<br>if pencil is in bag</p>
+        <span class="meta-pill yellow">Mini · 10 min</span>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <h4>Holiday Plan 🏖️</h4>
+        <p>Add destinations<br>+ count + check</p>
+        <span class="meta-pill">🎯 Project · 25 min</span>
+      </div>
+      <div class="step">
+        <div class="n">5</div>
+        <h4>Homework 📚</h4>
+        <p>3 levels — camp <br>· playlist · menu</p>
+        <span class="meta-pill">Take-home</span>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>5 activities today</span>
+    <span>04 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 5. SECTION 1 — Lists Basics ══ -->
+<section class="slide section-divider">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Part 1 of 3</div>
+  </div>
+  <div class="num">01</div>
+  <div class="pad" style="padding-top: 520px;">
+    <div class="eyebrow">PART ONE · Create a list</div>
+    <h2 class="h-title" style="max-width: 1400px;">Pack many<br>items in <span class="ac">one box.</span></h2>
+    <p style="font-family:var(--font-mono);font-size:32px;color:rgba(255,255,255,0.6);margin-top:24px">[ ]  ·  append  ·  remove</p>
+    <div class="progress">
+      <div class="dot now"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Section 01 · List basics</span>
+    <span>05 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 6. CONCEPT — list ══ -->
+<section class="slide concept">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">List = container</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">📦 List = a labeled box that holds many items</div>
+    <h2 class="h-big" style="max-width: 1600px;">Use <code style="font-family:var(--font-mono);background:var(--py-yellow);padding:6px 22px;border-radius:14px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink);display:inline-block">[ ]</code> to make one.</h2>
+    <div class="split">
+      <div class="points">
+        <div class="point">
+          <div class="bullet">[</div>
+          <div>
+            <h4>Square brackets</h4>
+            <p>Wrap items in <code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">[ ]</code>, separate with commas.</p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">+</div>
+          <div>
+            <h4>append() adds to the end</h4>
+            <p><code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">friends.append("Eve")</code></p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">−</div>
+          <div>
+            <h4>remove() takes one out</h4>
+            <p><code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">friends.remove("Bob")</code></p>
+          </div>
+        </div>
+      </div>
+      <div class="diagram-box">
+        <div style="display:flex;flex-direction:column;gap:16px;width:100%">
+          <div style="text-align:center;font-family:var(--font-mono);font-size:18px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">friends list</div>
+          <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+            <div style="background:var(--py-blue);color:#fff;padding:14px 18px;border-radius:12px;font-family:var(--font-mono);font-size:20px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)">"Alex"</div>
+            <div style="background:var(--py-blue);color:#fff;padding:14px 18px;border-radius:12px;font-family:var(--font-mono);font-size:20px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)">"Bob"</div>
+            <div style="background:var(--py-blue);color:#fff;padding:14px 18px;border-radius:12px;font-family:var(--font-mono);font-size:20px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)">"Cat"</div>
+            <div style="background:var(--py-blue);color:#fff;padding:14px 18px;border-radius:12px;font-family:var(--font-mono);font-size:20px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)">"Dan"</div>
+          </div>
+          <div style="text-align:center;margin-top:14px">
+            <div style="display:inline-block;background:var(--py-yellow);border:2px solid var(--ink);padding:10px 16px;border-radius:10px;font-family:var(--font-mono);font-size:18px">+ append("Eve")</div>
+          </div>
+          <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+            <div style="background:var(--py-blue);color:#fff;padding:14px 18px;border-radius:12px;font-family:var(--font-mono);font-size:20px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);opacity:.6">"Alex"</div>
+            <div style="background:var(--py-blue);color:#fff;padding:14px 18px;border-radius:12px;font-family:var(--font-mono);font-size:20px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);opacity:.6">"Bob"</div>
+            <div style="background:var(--py-blue);color:#fff;padding:14px 18px;border-radius:12px;font-family:var(--font-mono);font-size:20px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);opacity:.6">"Cat"</div>
+            <div style="background:var(--py-blue);color:#fff;padding:14px 18px;border-radius:12px;font-family:var(--font-mono);font-size:20px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);opacity:.6">"Dan"</div>
+            <div style="background:var(--py-yellow);color:var(--ink);padding:14px 18px;border-radius:12px;font-family:var(--font-mono);font-size:20px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)">"Eve" ✨</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>List = ordered collection of items</span>
+    <span>06 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 7. CODE — list basics ══ -->
+<section class="slide code-slide">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Code · list operations</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Live code · Try it!</div>
+    <h2 class="h-big" style="max-width: 1400px;">Build &amp; modify a <span class="ac">list.</span></h2>
+    <div class="code-shell">
+      <div class="bar">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="file">list_basics.py</div>
+      </div>
+<pre><span class="tk-cm"># Create a list with [ ]</span>
+<span class="tk-var">friends</span> = [<span class="tk-str">"Alex"</span>, <span class="tk-str">"Bob"</span>, <span class="tk-str">"Cat"</span>]
+<span class="tk-fn">print</span>(<span class="tk-var">friends</span>)         <span class="tk-cm"># ['Alex', 'Bob', 'Cat']</span>
+
+<span class="tk-cm"># Add to the end</span>
+<span class="tk-var">friends</span>.<span class="tk-fn">append</span>(<span class="tk-str">"Dan"</span>)
+<span class="tk-fn">print</span>(<span class="tk-var">friends</span>)         <span class="tk-cm"># ['Alex', 'Bob', 'Cat', 'Dan']</span>
+
+<span class="tk-cm"># Remove a specific item</span>
+<span class="tk-var">friends</span>.<span class="tk-fn">remove</span>(<span class="tk-str">"Bob"</span>)
+<span class="tk-fn">print</span>(<span class="tk-var">friends</span>)         <span class="tk-cm"># ['Alex', 'Cat', 'Dan']</span>
+
+<span class="tk-cm"># Check if something is inside</span>
+<span class="tk-fn">print</span>(<span class="tk-str">"Alex"</span> <span class="tk-kw">in</span> <span class="tk-var">friends</span>)  <span class="tk-cm"># True</span>
+<span class="tk-fn">print</span>(<span class="tk-fn">len</span>(<span class="tk-var">friends</span>))    <span class="tk-cm"># 3</span>
+</pre>
+    </div>
+    <div class="code-callout">
+      <span class="pill">💡 Tip</span>
+      <span><code style="font-family:var(--font-mono)">append()</code> adds at end · <code style="font-family:var(--font-mono)">remove()</code> takes by name · <code style="font-family:var(--font-mono)">pop()</code> takes last</span>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>List operations in code</span>
+    <span>07 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 8. WORKSHOP 1 — 7-11 List ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill">Workshop 1</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Hands-on · Workshop 1</div>
+    <h2 class="h-title" style="max-width: 1400px;">7-Eleven<br><span class="ac">List.</span> 🛒</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">Build a shopping list — start with 3 items, add 2, remove 1.</p>
+        <p class="body" style="margin-top:14px">Print at every step to see how the list changes.</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>Create a list with 3 starting items</div>
+          <div class="check"><div class="box"></div>append() 2 more items</div>
+          <div class="check"><div class="box"></div>remove() 1 item</div>
+          <div class="check"><div class="box"></div>print(len(list)) at the end</div>
+        </div>
+        <a href="workshops/workshop_01_seven_eleven.py" class="file-btn">📄 workshop_01_seven_eleven.py</a>
+      </div>
+      <div class="illust">🛒</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">10 min</div></div></div>
+      <div class="info"><div class="ico">👥</div><div><div class="label">Format</div><div class="value">Solo</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">append + remove</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Workshop 1 · 7-Eleven List</span>
+    <span>08 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 9. QUIZ 1 — list basics ══ -->
+<section class="slide quiz">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:var(--yellow);color:var(--ink)">Quick Quiz</span></div>
+  </div>
+  <div class="pad" style="padding-top: 130px;">
+    <div class="eyebrow">⚡ Quick Quiz · List operations</div>
+    <h2 class="question">After this code, what's <span class="ac-y">in the list?</span></h2>
+    <div class="q-code"><span style="color:#9cb4ff">items</span> = [<span style="color:#7ed4a5">"a"</span>, <span style="color:#7ed4a5">"b"</span>, <span style="color:#7ed4a5">"c"</span>]
+<span style="color:#9cb4ff">items</span>.<span style="color:#ffd479">append</span>(<span style="color:#7ed4a5">"d"</span>)
+<span style="color:#9cb4ff">items</span>.<span style="color:#ffd479">remove</span>(<span style="color:#7ed4a5">"b"</span>)</div>
+    <div class="options">
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">A</div>
+        <div class="text code-text">["a", "b", "c", "d"]</div>
+      </div>
+      <div class="opt" data-correct="true" onclick="revealQuiz(this)">
+        <div class="letter">B</div>
+        <div class="text code-text">["a", "c", "d"]</div>
+      </div>
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">C</div>
+        <div class="text code-text">["a", "c"]</div>
+      </div>
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">D</div>
+        <div class="text code-text">["d"]</div>
+      </div>
+    </div>
+    <div class="quiz-hint">👆 Tap any · append adds to end, remove takes one out by name</div>
+  </div>
+  <div class="chrome-bot">
+    <span>Quiz 1 · append &amp; remove</span>
+    <span>09 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 10. SECTION 2 — in / len ══ -->
+<section class="slide section-divider">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Part 2 of 3</div>
+  </div>
+  <div class="num">02</div>
+  <div class="pad" style="padding-top: 520px;">
+    <div class="eyebrow">PART TWO · Check &amp; Count</div>
+    <h2 class="h-title" style="max-width: 1400px;">Is it there?<br><span class="ac-y">How many?</span></h2>
+    <p style="font-family:var(--font-mono);font-size:32px;color:rgba(255,255,255,0.6);margin-top:24px">in &nbsp; · &nbsp; len()</p>
+    <div class="progress">
+      <div class="dot done"></div>
+      <div class="dot now"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Section 02 · in &amp; len</span>
+    <span>10 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 11. CONCEPT — in / len ══ -->
+<section class="slide concept">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">in &amp; len()</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🔍 Two questions you'll always ask</div>
+    <h2 class="h-big" style="max-width: 1600px;">Is it there?<br>How <span class="ac">many?</span></h2>
+    <div class="split">
+      <div class="points">
+        <div class="point">
+          <div class="bullet">?</div>
+          <div>
+            <h4>in — yes/no answer</h4>
+            <p><code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">"pencil" in bag</code> → True or False</p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">#</div>
+          <div>
+            <h4>len() — how many items</h4>
+            <p><code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:20px">len(bag)</code> → a number</p>
+          </div>
+        </div>
+        <div class="point">
+          <div class="bullet">⚡</div>
+          <div>
+            <h4>Combine with if</h4>
+            <p><code style="background:#fff2ca;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:18px">if "pencil" in bag:</code> ... gate logic.</p>
+          </div>
+        </div>
+      </div>
+      <div class="diagram-box">
+        <div style="display:flex;flex-direction:column;gap:16px;width:100%;font-family:var(--font-mono)">
+          <div style="font-family:var(--font-display);font-size:18px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;text-align:center;margin-bottom:6px">bag = ["book", "pen", "pencil", "ruler"]</div>
+          <div style="background:#dcf0e4;padding:18px 22px;border-radius:14px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);font-size:20px">
+            <div style="color:var(--muted);font-size:14px;margin-bottom:6px">"pencil" in bag</div>
+            <div style="font-weight:700;color:#0b6b3a">→ True ✓</div>
+          </div>
+          <div style="background:#ffe1dd;padding:18px 22px;border-radius:14px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);font-size:20px">
+            <div style="color:var(--muted);font-size:14px;margin-bottom:6px">"calculator" in bag</div>
+            <div style="font-weight:700;color:#b91c1c">→ False ✗</div>
+          </div>
+          <div style="background:#fff2ca;padding:18px 22px;border-radius:14px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);font-size:20px">
+            <div style="color:var(--muted);font-size:14px;margin-bottom:6px">len(bag)</div>
+            <div style="font-weight:700;color:#b45309">→ 4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>in (boolean) · len (count)</span>
+    <span>11 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 12. WORKSHOP 2 — School Bag (CTk) ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:#f59e0b">Workshop 2 · CTk</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Hands-on · Workshop 2 (GUI)</div>
+    <h2 class="h-title" style="max-width: 1400px;">School <span class="ac">Bag.</span> 🎒</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">CTk template — buttons to <strong>add / remove</strong> items in a bag.</p>
+        <p class="body" style="margin-top:14px">Edit the logic inside <code style="background:var(--yellow);padding:4px 12px;border-radius:8px;font-family:var(--font-mono);font-size:22px">add_item()</code> and <code style="background:var(--yellow);padding:4px 12px;border-radius:8px;font-family:var(--font-mono);font-size:22px">remove_item()</code></p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>Add: bag.append(name)</div>
+          <div class="check"><div class="box"></div>Remove: bag.remove(name)</div>
+          <div class="check"><div class="box"></div>(Bonus) Don't add duplicates — use in!</div>
+        </div>
+        <a href="workshops/workshop_02_school_bag_TEMPLATE.py" class="file-btn">🎒 Open CTk Template</a>
+      </div>
+      <div class="illust" style="background:linear-gradient(135deg,var(--py-blue),var(--py-blue-dark));font-size:160px">🎒</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">15 min</div></div></div>
+      <div class="info"><div class="ico">📦</div><div><div class="label">Install</div><div class="value">customtkinter</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">append + remove + GUI</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Workshop 2 · School Bag GUI</span>
+    <span>12 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 13. MINI — Find It ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:#2e7d32">Mini</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">Mini exercise · in operator</div>
+    <h2 class="h-title" style="max-width: 1400px;">Find it in <span class="ac">the bag.</span> 🔍</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">Ask user for an item → check if it's in the bag using <code style="background:var(--yellow);padding:4px 12px;border-radius:8px;font-family:var(--font-mono);font-size:22px">in</code></p>
+        <p class="body" style="margin-top:14px">Print "Yes!" or "No, you forgot it!"</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>Pre-filled bag = ["book", "pen", "pencil", "ruler"]</div>
+          <div class="check"><div class="box"></div>Ask user for an item</div>
+          <div class="check"><div class="box"></div>Use if-else with <code style="font-family:var(--font-mono)">in</code></div>
+          <div class="check"><div class="box"></div>Print friendly message</div>
+        </div>
+        <a href="workshops/mini_check_pencil.py" class="file-btn">📄 mini_check_pencil.py</a>
+      </div>
+      <div class="illust" style="background:#dcf0e4;font-size:140px">🔍</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">10 min</div></div></div>
+      <div class="info"><div class="ico">👥</div><div><div class="label">Format</div><div class="value">Solo</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">in + if-else</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Mini · Find It</span>
+    <span>13 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 14. SECTION 3 — Project ══ -->
+<section class="slide section-divider">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Part 3 of 3</div>
+  </div>
+  <div class="num">03</div>
+  <div class="pad" style="padding-top: 520px;">
+    <div class="eyebrow">🎯 PROJECT · Real plan</div>
+    <h2 class="h-title" style="max-width: 1400px;">Where to go<br>this <span class="ac-y">holiday?</span></h2>
+    <p style="font-family:var(--font-mono);font-size:32px;color:rgba(255,255,255,0.6);margin-top:24px">add · remove · check · count</p>
+    <div class="progress">
+      <div class="dot done"></div>
+      <div class="dot done"></div>
+      <div class="dot now"></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Section 03 · Holiday Plan</span>
+    <span>14 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 15. PROJECT — Holiday Plan ══ -->
+<section class="slide activity">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:var(--ink)">🎯 Project</span></div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🎯 Project · 25 min</div>
+    <h2 class="h-title" style="max-width: 1400px;">Holiday <span class="ac">Plan.</span> 🏖️</h2>
+    <div class="hero-row">
+      <div>
+        <p class="body">Plan your dream holiday — list of <strong>destinations</strong> you want to visit!</p>
+        <p class="body" style="margin-top:8px">Add 5 places, remove 1, check if a place is in your list, count total.</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div>Empty list — start with []</div>
+          <div class="check"><div class="box"></div>Loop ask 5 destinations + append</div>
+          <div class="check"><div class="box"></div>Print full list</div>
+          <div class="check"><div class="box"></div>Ask one to remove → use remove()</div>
+          <div class="check"><div class="box"></div>Ask one to check → use in</div>
+          <div class="check"><div class="box"></div>🏠 Ask parents where they want to go!</div>
+        </div>
+        <a href="workshops/project_holiday_plan.py" class="file-btn">🎯 project_holiday_plan.py</a>
+      </div>
+      <div class="illust" style="background:linear-gradient(135deg,#6fb8ff,#1565c0);font-size:160px">🏖️</div>
+    </div>
+    <div class="info-row">
+      <div class="info"><div class="ico">⏱</div><div><div class="label">Time</div><div class="value">25 min</div></div></div>
+      <div class="info"><div class="ico">🏠</div><div><div class="label">Share</div><div class="value">Talk with parents!</div></div></div>
+      <div class="info"><div class="ico">🎯</div><div><div class="label">Skill</div><div class="value">All list operations</div></div></div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Project · Holiday Plan</span>
+    <span>15 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 16. QUIZ 2 — len + in ══ -->
+<section class="slide quiz">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb"><span class="pill" style="background:var(--yellow);color:var(--ink)">Final Quiz</span></div>
+  </div>
+  <div class="pad" style="padding-top: 130px;">
+    <div class="eyebrow">⚡ Final Quiz · in &amp; len</div>
+    <h2 class="question">What does this <span class="ac-y">print?</span></h2>
+    <div class="q-code"><span style="color:#9cb4ff">bag</span> = [<span style="color:#7ed4a5">"book"</span>, <span style="color:#7ed4a5">"pen"</span>, <span style="color:#7ed4a5">"pencil"</span>]
+<span style="color:#ffd479">print</span>(<span style="color:#7ed4a5">"pencil"</span> <span style="color:#ff7a85">in</span> <span style="color:#9cb4ff">bag</span>, <span style="color:#ffd479">len</span>(<span style="color:#9cb4ff">bag</span>))</div>
+    <div class="options">
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">A</div>
+        <div class="text code-text">pencil 3</div>
+      </div>
+      <div class="opt" data-correct="true" onclick="revealQuiz(this)">
+        <div class="letter">B</div>
+        <div class="text code-text">True 3</div>
+      </div>
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">C</div>
+        <div class="text code-text">False 3</div>
+      </div>
+      <div class="opt" data-correct="false" onclick="revealQuiz(this)">
+        <div class="letter">D</div>
+        <div class="text code-text">True 4</div>
+      </div>
+    </div>
+    <div class="quiz-hint">👆 Tap any · in returns True/False · len counts items</div>
+  </div>
+  <div class="chrome-bot">
+    <span>Quiz 2 · in + len</span>
+    <span>16 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 17. HOMEWORK ══ -->
+<section class="slide homework">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Homework · 3 levels</div>
+  </div>
+  <div class="pad" style="padding-top: 120px;">
+    <div class="eyebrow">📚 Homework · Pick your level</div>
+    <h2 class="h-big">Take it <span class="ac">home.</span> 📖</h2>
+    <div class="hw-grid">
+      <!-- HW1 -->
+      <div class="hw-card">
+        <div class="hw-tag">HW1 · Required</div>
+        <h3>🏕️ Camp Supplies</h3>
+        <p class="hw-task">Pack for a 5-day camp! <strong>Append 10 items</strong> one by one, then <strong>remove 3</strong> things you don't need.</p>
+        <div class="hw-sub">Example Output</div>
+<div class="hw-example"><span class="tk-cm"># After append+remove:</span>
+[<span class="tk-str">"tent"</span>, <span class="tk-str">"sleeping bag"</span>,
+ <span class="tk-str">"flashlight"</span>, <span class="tk-str">"food"</span>,
+ <span class="tk-str">"water"</span>, <span class="tk-str">"map"</span>, <span class="tk-str">"jacket"</span>]
+<span class="tk-cm"># Total: 7 items</span></div>
+        <div class="hw-bonus">
+          <strong>🎁 Bonus:</strong> Use a loop to ask user 10 inputs (don't hardcode). Use <code style="font-family:var(--font-mono);font-size:12px">in</code> to prevent duplicates!
+        </div>
+        <div class="hw-foot">
+          <span class="hw-stars">⭐⭐</span>
+          <a href="workshops/hw1_camp_supplies.py" class="hw-btn">📄 Open file</a>
+        </div>
+      </div>
+      <!-- HW2 -->
+      <div class="hw-card mid">
+        <div class="hw-tag">HW2 · Advanced</div>
+        <h3>🎵 My Playlist</h3>
+        <p class="hw-task">Build YOUR favorite songs playlist. Add 5+, remove 1, then check if a song is in the playlist using <code style="background:#fff2ca;padding:1px 5px;border-radius:3px;font-family:var(--font-mono);font-size:14px">in</code>.</p>
+        <div class="hw-sub">Example Output</div>
+<div class="hw-example"><span class="tk-cm"># Playlist with 5 songs</span>
+Has <span class="tk-str">"Pink Venom"</span>? True
+Has <span class="tk-str">"Old MacDonald"</span>? False
+Total: <span class="tk-num">5</span> songs</div>
+        <div class="hw-bonus">
+          <strong>🎁 Bonus:</strong> If song is already there → "Already in!". Else → append. Use if-in pattern!
+        </div>
+        <div class="hw-foot">
+          <span class="hw-stars">⭐⭐⭐</span>
+          <a href="workshops/hw2_playlist.py" class="hw-btn">📄 Open file</a>
+        </div>
+      </div>
+      <!-- HW3 -->
+      <div class="hw-card hard">
+        <div class="hw-tag">HW3 · Expert</div>
+        <h3>🍜 Weekly Menu</h3>
+        <p class="hw-task">Plan 7 days of dinner — <strong>limit to 7</strong> items! Use <code style="background:#fff2ca;padding:1px 5px;border-radius:3px;font-family:var(--font-mono);font-size:14px">len()</code> + <code style="background:#fff2ca;padding:1px 5px;border-radius:3px;font-family:var(--font-mono);font-size:14px">if</code> to enforce the limit.</p>
+        <div class="hw-sub">Example Output</div>
+<div class="hw-example"><span class="tk-cm"># Loop to ask 8 menus:</span>
+<span class="tk-num">1.</span> Pad Thai      ✓
+<span class="tk-num">2.</span> Tom Yum       ✓
+...
+<span class="tk-num">7.</span> Pizza         ✓
+<span class="tk-num">8.</span> <span class="tk-str">Sukiyaki</span>      ❌ Full!</div>
+        <div class="hw-bonus">
+          <strong>🎁 Bonus:</strong> Ask parents what they want to eat — use those as menus!
+        </div>
+        <div class="hw-foot">
+          <span class="hw-stars">⭐⭐⭐⭐⭐</span>
+          <a href="workshops/hw3_weekly_menu.py" class="hw-btn">📄 Open file</a>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:24px;padding:16px 24px;background:var(--yellow);border:2px solid var(--ink);border-radius:14px;display:flex;align-items:center;gap:14px;box-shadow:4px 4px 0 var(--ink)">
+      <span style="font-size:22px">📌</span>
+      <span style="font-size:18px;font-weight:600;font-family:var(--font-display)">Submit: Trinket link OR screenshot → LINE group · Deadline: before next session</span>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Homework · 3 levels</span>
+    <span>17 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 18. WRAP UP ══ -->
+<section class="slide recap">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">Wrap up</div>
+  </div>
+  <div class="pad" style="padding-top: 140px;">
+    <div class="eyebrow">🎉 Today you mastered</div>
+    <h2 class="h-title" style="max-width: 1600px;">You can hold<br><span class="ac">many things now!</span></h2>
+    <div class="big-list">
+      <div class="item">
+        <div class="num">01</div>
+        <div class="text">Lists with [ ] — store many items in 1 variable<span>strings, numbers, anything!</span></div>
+      </div>
+      <div class="item">
+        <div class="num">02</div>
+        <div class="text">append() / remove() / pop() — modify your list<span>add, take out, drop the last</span></div>
+      </div>
+      <div class="item">
+        <div class="num">03</div>
+        <div class="text">in / len() — check &amp; count<span>boolean answer · how many items</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>Wrap up</span>
+    <span>18 / 19</span>
+  </div>
+</section>
+
+<!-- ══ 19. GOODBYE ══ -->
+<section class="slide qa">
+  <div class="chrome-top">
+    <div class="brand">
+      <img src="../../logo/Logo-Horizontal.svg" alt="CodeLab" class="brand-logo">
+      <span class="brand-tag">Thailand</span>
+    </div>
+    <div class="crumb">See you next week</div>
+  </div>
+  <div class="emoji-party">
+    <div class="e e-main">📋</div>
+    <div class="e e-1">🎒</div>
+  </div>
+  <div class="pad" style="padding-top: 200px;position:relative;z-index:1">
+    <div class="eyebrow">Session 01 · Complete</div>
+    <h1 class="h-hero" style="max-width:1200px">List<br><span class="ac-y">starter!</span></h1>
+    <p class="sub">Today you packed many items into <strong>one variable</strong> — and managed them.<br>Next session: <strong>Access &amp; Slicing</strong> — pull out specific items! 🔪</p>
+    <div class="emoji-badges">
+      <span class="b">📋</span>
+      <span class="b">➕</span>
+      <span class="b">🔍</span>
+      <span class="b">🏖️</span>
+    </div>
+    <div style="margin-top:auto;display:flex;gap:24px;flex-wrap:wrap">
+      <div style="background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.2);border-radius:20px;padding:24px 28px;flex:1;min-width:340px;backdrop-filter:blur(10px)">
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px">🏠 Take home</div>
+        <div style="font-family:var(--font-display);font-size:26px;line-height:1.25">Pick HW1 / HW2 / HW3 → Trinket link to LINE</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.2);border-radius:20px;padding:24px 28px;flex:1;min-width:340px;backdrop-filter:blur(10px)">
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px">🔮 Next week</div>
+        <div style="font-family:var(--font-display);font-size:26px;line-height:1.25">Session 02<br>Access &amp; Slicing!</div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome-bot">
+    <span>CodeLab Thailand · Python F2</span>
+    <span>19 / 19</span>
+  </div>
+</section>
+
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let idx = 0;
+  document.getElementById('total').textContent = slides.length;
+  function show(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[i].classList.add('active');
+    document.getElementById('cur').textContent = i + 1;
+    history.replaceState(null, '', '#' + (i + 1));
+  }
+  function next() { if (idx < slides.length - 1) { idx++; show(idx); } }
+  function prev() { if (idx > 0) { idx--; show(idx); } }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { idx = 0; show(idx); }
+    else if (e.key === 'End') { idx = slides.length - 1; show(idx); }
+  });
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!isNaN(hash) && hash >= 1 && hash <= slides.length) idx = hash - 1;
+  show(idx);
+
+  function revealQuiz(el) {
+    const slide = el.closest('.slide');
+    if (!slide) return;
+    slide.querySelectorAll('.opt').forEach(opt => {
+      opt.classList.add('revealed');
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+      else opt.classList.add('wrong');
+    });
+  }
+</script>
+</body>
+</html>
